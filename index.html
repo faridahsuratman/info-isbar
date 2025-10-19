@@ -1,54 +1,694 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ms" class="h-full">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Information Website</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ISBAR Web Interaktif — Single-File HTML</title>
+
+  <!-- Tailwind (CDN) -->
+  <script>
+    window.tailwind = { config: { darkMode: 'class' } }
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f5f5f5;
-    }
-    header {
-      background-color: #0078d7;
-      color: white;
-      text-align: center;
-      padding: 1em 0;
-    }
-    main {
-      padding: 2em;
-      max-width: 800px;
-      margin: auto;
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    footer {
-      text-align: center;
-      padding: 1em;
-      background-color: #0078d7;
-      color: white;
-      position: fixed;
-      width: 100%;
-      bottom: 0;
+    @media print {
+      .no-print { display: none !important; }
+      .print-bg { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      body { background: #fff !important; }
     }
   </style>
 </head>
-<body>
-  <header>
-    <h1>Welcome to My Info Website</h1>
-  </header>
-  <main>
-    <h2>About This Site</h2>
-    <p>This website shares useful information about my work, interests, and projects.</p>
+<body class="h-full min-h-screen bg-gradient-to-br from-emerald-50 to-white dark:from-zinc-950 dark:to-zinc-900 text-zinc-800 dark:text-zinc-100">
 
-    <h2>Contact</h2>
-    <p>Email: <a href="mailto:example@gmail.com">example@gmail.com</a></p>
+  <!-- Header -->
+  <header class="sticky top-0 z-10 backdrop-blur bg-white/70 dark:bg-zinc-950/60 border-b border-zinc-200/70 dark:border-zinc-800 print:bg-white print:backdrop-blur-none print:dark:bg-white">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="h-9 w-9 rounded-xl bg-emerald-600 grid place-items-center text-white font-bold shadow print-bg">IS</div>
+        <div>
+          <h1 class="text-lg md:text-xl font-semibold">ISBAR Web Interaktif</h1>
+          <div class="text-[12px] text-zinc-500 dark:text-zinc-400">Latihan komunikasi klinikal untuk jururawat & pegawai perubatan</div>
+        </div>
+      </div>
+      <div class="flex items-center gap-3 no-print">
+        <div class="hidden md:block w-56"><div id="progressBar" class="w-full bg-zinc-200 dark:bg-zinc-800 h-3 rounded-full overflow-hidden"><div id="progressFill" class="h-3 bg-emerald-500 transition-all" style="width:20%"></div></div></div>
+        <button id="darkToggle" class="relative inline-flex h-7 w-14 items-center rounded-full border transition bg-zinc-300 dark:bg-zinc-700 border-zinc-400 dark:border-zinc-600" aria-label="toggle theme">
+          <span class="inline-block h-6 w-6 transform rounded-full bg-white shadow transition translate-x-1"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="max-w-6xl mx-auto px-4 py-6 md:py-8">
+
+    <!-- Tabs -->
+    <div class="flex flex-wrap gap-2 mb-5 no-print">
+      <button data-tab="intro" class="tab-btn px-4 py-2 rounded-xl text-sm font-medium border transition shadow-sm bg-emerald-600 text-white border-emerald-700">Pengenalan</button>
+      <button data-tab="guide" class="tab-btn px-4 py-2 rounded-xl text-sm font-medium border transition shadow-sm bg-white/70 dark:bg-zinc-900/60 text-zinc-700 dark:text-zinc-200 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-800">Panduan ISBAR</button>
+      <button data-tab="sim"   class="tab-btn px-4 py-2 rounded-xl text-sm font-medium border transition shadow-sm bg-white/70 dark:bg-zinc-900/60 text-zinc-700 dark:text-zinc-200 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-800">Simulasi</button>
+      <button data-tab="quiz"  class="tab-btn px-4 py-2 rounded-xl text-sm font-medium border transition shadow-sm bg-white/70 dark:bg-zinc-900/60 text-zinc-700 dark:text-zinc-200 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-800">Kuiz</button>
+      <button data-tab="resources" class="tab-btn px-4 py-2 rounded-xl text-sm font-medium border transition shadow-sm bg-white/70 dark:bg-zinc-900/60 text-zinc-700 dark:text-zinc-200 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-800">Sumber</button>
+    </div>
+
+    <!-- Intro -->
+    <section id="tab-intro" class="tab-panel">
+      <div class="section">
+        <div class="section-head">
+          <h2 class="section-title">Objektif Pembelajaran</h2>
+        </div>
+        <div class="section-body">
+          <ul class="list-disc pl-5 text-sm">
+            <li>Mengaplikasi rangka ISBAR untuk komunikasi klinikal yang selamat</li>
+            <li>Menyusun informasi pesakit secara ringkas, tepat & relevan</li>
+            <li>Menyatakan rekomendasi yang jelas, masa tindakan & eskalasi</li>
+          </ul>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-head">
+          <h2 class="section-title">Cara Guna Modul</h2>
+        </div>
+        <div class="section-body">
+          <ol class="list-decimal pl-5 text-sm">
+            <li>Baca <b>Panduan ISBAR</b> dan semak template.</li>
+            <li>Pilih <b>kes simulasi</b> & isi medan I-S-B-A-R. Guna kata kunci.</li>
+            <li>Klik <b>Jana Skor</b> untuk maklum balas segera.</li>
+            <li>Cetak/Simpan PDF untuk sijil/rekod latihan; muat turun laporan JSON untuk audit.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- Guide -->
+    <section id="tab-guide" class="tab-panel hidden">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+        <div>
+          <div class="card">
+            <div class="card-head"><h3 class="card-title">I — Identity (Identiti)</h3></div>
+            <div class="card-body text-sm">Perkenalkan diri & pesakit secara ringkas: nama, umur, RN, lokasi/katil. Contoh: "Saya Nazif, penyelia di ED. Pesakit Ahmad 62 tahun, RN B912345, Zon Merah Katil 7."</div>
+          </div>
+          <div class="card">
+            <div class="card-head"><h3 class="card-title">S — Situation (Situasi)</h3></div>
+            <div class="card-body text-sm">Nyatakan sebab panggilan & isu utama yang <b>time-critical</b>. Contoh: "Slurred speech dan left weakness, onset 45 minit lalu; FAST positif."</div>
+          </div>
+          <div class="card">
+            <div class="card-head"><h3 class="card-title">B — Background (Latar Belakang)</h3></div>
+            <div class="card-body text-sm">Maklumat klinikal penting: diagnosis lampau, comorbid, ubat/alergi, kejadian berkaitan.</div>
+          </div>
+          <div class="card">
+            <div class="card-head"><h3 class="card-title">A — Assessment (Penilaian)</h3></div>
+            <div class="card-body text-sm">Ringkasan klinikal: vital signs, pemerhatian, keputusan awal (ECG/CT/CXR), skor (contoh NIHSS/GCS).</div>
+          </div>
+          <div class="card">
+            <div class="card-head"><h3 class="card-title">R — Recommendation (Rekomendasi)</h3></div>
+            <div class="card-body text-sm">Nyatakan <b>apa yang anda perlukan</b>, tempoh masa, dan eskalasi. Contoh: "Mohon review neuro segera & CT brain sekarang; pertimbang thrombolysis jika layak."</div>
+          </div>
+        </div>
+        <div>
+          <div class="section">
+            <div class="section-head"><h2 class="section-title">Contoh Ringkas (Template)</h2></div>
+            <div class="section-body">
+              <pre class="text-sm whitespace-pre-wrap bg-white/70 dark:bg-zinc-900/70 p-4 rounded-xl border border-zinc-200 dark:border-zinc-700">{`I: Saya [Nama], [Jawatan] di [Lokasi]. Pesakit [Nama], [Umur] tahun, RN [No], [Lokasi/Katil].
+S: [Sebab panggilan] — [isu utama/time-critical].
+B: [Diagnosis/comorbid], [ubat/alergi relevan], [perkara berkaitan].
+A: [Vitals], [pemerhatian utama], [ujian/imej], [skor].
+R: Saya perlukan [Tindakan] dalam [Masa]. Jika [X], eskalasi kepada [Y].`}</pre>
+            </div>
+          </div>
+          <div class="section">
+            <div class="section-head"><h2 class="section-title">Checklist Kualiti ISBAR</h2></div>
+            <div class="section-body">
+              <ul class="list-disc pl-5 text-sm">
+                <li>Ringkas (≤60–90 saat), berstruktur & jelas</li>
+                <li>Gunakan kata kunci klinikal yang tepat</li>
+                <li>R mengandungi tindakan, masa & eskalasi</li>
+                <li>Tutup dengan confirmation: "Adakah jelas? Ada arahan tambahan?"</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Simulation -->
+    <section id="tab-sim" class="tab-panel hidden">
+      <div class="section">
+        <div class="section-head">
+          <h2 class="section-title">Pilih Kes</h2>
+        </div>
+        <div id="caseButtons" class="section-body flex flex-wrap gap-3"></div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+        <!-- Left: form & actions -->
+        <div>
+          <div class="flex items-center gap-2 flex-wrap mb-3">
+            <span id="caseTag" class="badge-emerald">Kes: —</span>
+            <span id="levelPill" class="pill">Aras: —</span>
+            <span id="timerPill" class="pill">Masa: 0m 0s</span>
+            <span id="scorePill" class="score-pill bg-rose-600">0%</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4 no-print">
+            <button id="timerBtn" class="btn">Mula Timer</button>
+            <button id="loadSampleBtn" class="btn">Muatkan Contoh Teks</button>
+            <button id="calcScoreBtn" class="btn-emerald">Jana Skor & Maklum Balas</button>
+            <button id="resetBtn" class="btn-rose">Set Semula</button>
+          </div>
+
+          <div id="formFields"></div>
+
+          <div class="flex flex-wrap gap-3 mt-4 no-print">
+            <button id="downloadBtn" class="btn">Muat Turun Laporan (.json)</button>
+            <button id="printBtn" class="btn">Cetak / Simpan PDF</button>
+          </div>
+        </div>
+
+        <!-- Right: script preview + cards -->
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-semibold text-zinc-800 dark:text-zinc-100">Pratonton Skrip Panggilan</h3>
+            <button id="scriptToggle" class="relative inline-flex h-7 w-14 items-center rounded-full border transition bg-zinc-300 dark:bg-zinc-700 border-zinc-400 dark:border-zinc-600 no-print" aria-label="toggle script">
+              <span class="inline-block h-6 w-6 transform rounded-full bg-white shadow transition translate-x-1"></span>
+            </button>
+          </div>
+          <div id="scriptBox" class="border rounded-2xl p-4 bg-white/80 dark:bg-zinc-900/70 border-zinc-200 dark:border-zinc-700 whitespace-pre-wrap text-sm"></div>
+
+          <div class="mt-4 space-y-3">
+            <div class="card">
+              <div class="card-head flex items-center justify-between"><h3 class="card-title">Objektif Latihan</h3><button data-toggle="#obj-card" class="btn-mini">Sembunyi</button></div>
+              <div id="obj-card" class="card-body text-sm"><ul id="objectivesList" class="list-disc pl-5"></ul></div>
+            </div>
+            <div class="card">
+              <div class="card-head flex items-center justify-between"><h3 class="card-title">Hint Klinikal</h3><button data-toggle="#hint-card" class="btn-mini">Sembunyi</button></div>
+              <div id="hint-card" class="card-body text-sm"><ul id="hintsList" class="list-disc pl-5"></ul></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quiz -->
+    <section id="tab-quiz" class="tab-panel hidden">
+      <div class="section">
+        <div class="section-head flex items-center justify-between">
+          <h2 class="section-title">Penilaian Pengetahuan (MCQ)</h2>
+          <span id="quizScorePill" class="score-pill bg-rose-600">0%</span>
+        </div>
+        <div id="quizContainer" class="space-y-4 mt-3"></div>
+        <div class="flex gap-3 mt-4 no-print">
+          <button id="quizSubmit" class="btn-emerald">Semak Skor</button>
+          <button id="quizReset" class="btn">Reset</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Resources -->
+    <section id="tab-resources" class="tab-panel hidden">
+      <div class="section">
+        <div class="section-head">
+          <h2 class="section-title">Sumber & Rujukan (Ringkas)</h2>
+        </div>
+        <div class="section-body">
+          <ul class="list-disc pl-5 text-sm">
+            <li>SBAR/ISBAR frameworks — WHO Patient Safety & Institute for Healthcare Improvement (IHI)</li>
+            <li>Komunikasi efektif semasa handover & eskalasi klinikal (garis panduan hospital setempat)</li>
+            <li>Cadangan: tambah video demonstrasi dalaman & borang audit kualiti</li>
+          </ul>
+        </div>
+      </div>
+    </section>
   </main>
-  <footer>
-    © 2025 My Info Website
+
+  <!-- Footer -->
+  <footer class="max-w-6xl mx-auto px-4 pb-10 text-xs text-zinc-500 dark:text-zinc-400">
+    © <span id="yearNow"></span> ISBAR Web Interaktif — latihan dalaman. Simpan PDF untuk rekod CPD.
   </footer>
+
+  <script>
+  // ======= Data (cases & quiz) =======
+  const cases = [
+    {
+      id: "stroke",
+      title: "Acute Ischaemic Stroke (ED: Zon Merah)",
+      level: "Intermediate",
+      objectives: [
+        "Kenal pasti kata kunci FAST, CTA/CT Brain, tPA/Thrombectomy window",
+        "Bentukkan rekomendasi jelas (neuro review segera)"
+      ],
+      hints: [
+        "Face droop, Arm weakness, Speech difficulty, Time (FAST)",
+        "CT brain, onset time, BP, GCS"
+      ],
+      keywords: {
+        situation: ["stroke", "slurred", "weakness", "FAST", "onset"],
+        background: ["hypertension", "diabetes", "antiplatelet", "AF", "smoker"],
+        assessment: ["GCS", "BP", "CT", "facial", "hemiparesis", "NIHSS"],
+        recommendation: ["CT", "neuro", "thrombolysis", "thrombectomy", "monitor"]
+      },
+      sample: {
+        identity: "Nama: Ahmad, Umur: 62, RN: B912345, Lokasi: ED Zon Merah, Katil 7",
+        situation: "Pesakit datang dengan slurred speech dan kelemahan bahagian kiri badan, onset sekitar 45 minit lalu; FAST positif.",
+        background: "Sejarah HTN 10 tahun, DM, on aspirin. Tiada trauma kepala. Gula kap 8.7.",
+        assessment: "GCS 14 (E4V4M6), BP 178/96, HR 88, SpO2 97% RA. Facial asymmetry. Sedang menunggu CT brain.",
+        recommendation: "Mohon penilaian neurologi segera dan keutamaan CT brain. Pertimbangkan thrombolysis jika memenuhi kriteria; saran pemantauan BP ketat."
+      }
+    },
+    {
+      id: "sepsis",
+      title: "Sepsis — Suspected Pneumonia (ED: Zon Kuning)",
+      level: "Intermediate",
+      objectives: [
+        "Kenal pasti red flags sepsis & resus 1 jam",
+        "Komunikasi jelas untuk antibiotik awal dan kultur"
+      ],
+      hints: [
+        "Vitals, lactate, cultures, antibiotics within 1 hour",
+        "Urine output, oxygen, fluid bolus"
+      ],
+      keywords: {
+        situation: ["fever", "tachy", "hypotension", "sepsis", "pneumonia"],
+        background: ["COPD", "DM", "immuno", "recent infection", "aspiration"],
+        assessment: ["RR", "lactate", "cultures", "WBC", "CXR", "SpO2"],
+        recommendation: ["antibiotics", "cultures", "fluids", "O2", "monitor"]
+      },
+      sample: {
+        identity: "Nama: Pn. Salmah, Umur: 70, RN: C778899, Lokasi: ED Zon Kuning, Katil 12",
+        situation: "Demam tinggi, batuk berkahak, RR 28/min, SpO2 90% RA. Disyaki pneumonia dengan sepsis.",
+        background: "DM, COPD, pernah warded tahun lepas kerana pneumonia.",
+        assessment: "BP 94/60, HR 118, T 39.2, CXR menunjukkan infiltrates. WBC tinggi; laktat sedang diproses.",
+        recommendation: "Mohon antibiotik spektrum luas segera, ambil kultur darah/sputum, bolus cecair 30 ml/kg, oksigen titrasi, pemantauan ketat."
+      }
+    },
+    {
+      id: "mi",
+      title: "STEMI — Anterior (ED: Zon Merah)",
+      level: "Advanced",
+      objectives: [
+        "Kenal pasti STEMI dan aktivasi reperfusi",
+        "Koordinasi cepat (door-to-balloon/needle time)"
+      ],
+      hints: [
+        "ECG ST elevation, troponin, antiplatelets, cardiology activation",
+        "Time of onset, contraindications"
+      ],
+      keywords: {
+        situation: ["chest pain", "ST elevation", "MI", "STEMI", "sweating"],
+        background: ["HTN", "DM", "smoker", "statin", "previous MI"],
+        assessment: ["ECG", "troponin", "pain score", "BP", "O2"],
+        recommendation: ["cardio", "PCI", "thrombolysis", "antiplatelet", "heparin"]
+      },
+      sample: {
+        identity: "Nama: En. Razak, Umur: 58, RN: D667700, Lokasi: ED Zon Merah, Katil 2",
+        situation: "Sakit dada central, berpeluh, bermula 30 minit lalu. ECG menunjukkan ST elevasi anterior.",
+        background: "HTN, DM, perokok tegar, tiada sejarah pendarahan GI.",
+        assessment: "BP 150/90, HR 102, SpO2 96% RA. Troponin pertama belum keluar. Pain score 8/10.",
+        recommendation: "Mohon aktifkan pasukan kardiologi untuk PCI segera, sediakan antiplatelet dan heparin, pastikan consent & persediaan transfer ke cath lab."
+      }
+    }
+  ];
+
+  const quiz = [
+    { q: "Komponen manakah yang PALING sesuai untuk menyatakan keperluan tindakan segera?", options: ["Situation", "Background", "Assessment", "Recommendation"], a: 3 },
+    { q: "Dalam ISBAR, maklumat 'ubat sedia ada & alergi' lazimnya ditempatkan di?", options: ["Identity", "Background", "Assessment", "Recommendation"], a: 1 },
+    { q: "Contoh ayat yang baik dalam 'Assessment' ialah...", options: ["'Saya rasa pesakit ni tak apa-apa'", "'Tanda vital stable'", "'GCS 14, BP 178/96, facial asymmetry, CT brain pending'", "'Sila doktor tentukan'"], a: 2 },
+    { q: "Apakah ciri utama komunikasi ISBAR yang baik?", options: ["Panjang & terperinci tanpa struktur", "Berstruktur, ringkas, jelas, ada cadangan", "Banyak istilah kompleks", "Bebas mengikut kreativiti"], a: 1 },
+    { q: "Elemen 'Identity' yang bagus mengandungi...", options: ["Nama pesakit sahaja", "Nama + umur + RN + lokasi/katil", "Diagnosis terbaru sahaja", "Nombor telefon waris"], a: 1 },
+    { q: "'Time critical' lazimnya perlu dinyatakan dalam komponen...", options: ["Situation", "Background", "Assessment", "Recommendation"], a: 3 }
+  ];
+
+  // ======= Helpers =======
+  const $ = sel => document.querySelector(sel);
+  const $$ = sel => Array.from(document.querySelectorAll(sel));
+
+  const getLS = (k, def) => {
+    try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : def; } catch { return def; }
+  };
+  const setLS = (k, v) => localStorage.setItem(k, JSON.stringify(v));
+
+  const download = (filename, text) => {
+    const el = document.createElement('a');
+    el.setAttribute('href', 'data:text/json;charset=utf-8,' + encodeURIComponent(text));
+    el.setAttribute('download', filename);
+    document.body.appendChild(el); el.click(); el.remove();
+  };
+
+  const kebab = s => s.toLowerCase().replace(/\s+/g, '-');
+
+  // ======= State =======
+  let dark = getLS('isbar_dark', false);
+  let tab = getLS('isbar_tab', 'intro');
+  let caseId = getLS('isbar_case', cases[0].id);
+  let form = getLS('isbar_form_' + caseId, { identity:'', situation:'', background:'', assessment:'', recommendation:'' });
+  let score = getLS('isbar_score_' + caseId, 0);
+  let feedback = getLS('isbar_feedback_' + caseId, '');
+  let showScript = getLS('isbar_show_script_' + caseId, true);
+  let seconds = getLS('isbar_timer_' + caseId, 0);
+  let timerOn = false;
+
+  let quizAnswers = getLS('isbar_quiz', Array(quiz.length).fill(null));
+  let quizScore = getLS('isbar_quiz_score', 0);
+
+  // ======= UI Parts (render functions) =======
+  function applyDark() {
+    const root = document.documentElement;
+    if (dark) root.classList.add('dark'); else root.classList.remove('dark');
+    setLS('isbar_dark', dark);
+    // toggle knob position
+    const knob = $('#darkToggle span');
+    if (knob) knob.classList.toggle('translate-x-7', dark), knob.classList.toggle('translate-x-1', !dark);
+    // toggle bg colors
+    const tgl = $('#darkToggle');
+    if (tgl) {
+      if (dark) { tgl.classList.remove('bg-zinc-300','border-zinc-400'); tgl.classList.add('dark:bg-zinc-700','dark:border-zinc-600'); }
+    }
+  }
+
+  function setActiveTab(next) {
+    tab = next; setLS('isbar_tab', tab);
+    $$('.tab-panel').forEach(p => p.classList.add('hidden'));
+    $('#tab-' + tab).classList.remove('hidden');
+    $$('.tab-btn').forEach(b => {
+      const active = b.dataset.tab === tab;
+      b.className = `tab-btn px-4 py-2 rounded-xl text-sm font-medium border transition shadow-sm ${active ? 'bg-emerald-600 text-white border-emerald-700' : 'bg-white/70 dark:bg-zinc-900/60 text-zinc-700 dark:text-zinc-200 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-800'}`;
+    });
+    updateProgress();
+  }
+
+  function updateProgress() {
+    let p = tab === 'intro' ? 20 : tab === 'guide' ? 40 : tab === 'sim' ? 75 : tab === 'quiz' ? 90 : 20;
+    const stored = parseInt(localStorage.getItem('isbar_quiz_score') || '0', 10);
+    if (stored >= 80) p = 100;
+    $('#progressFill').style.width = p + '%';
+  }
+
+  function selectedCase() {
+    return cases.find(c => c.id === caseId);
+  }
+
+  function renderCaseButtons() {
+    const wrap = $('#caseButtons'); wrap.innerHTML = '';
+    cases.forEach(c => {
+      const btn = document.createElement('button');
+      btn.className = `px-3 py-2 rounded-xl border text-sm ${c.id === caseId ? 'bg-emerald-600 text-white border-emerald-700' : 'bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700'}`;
+      btn.textContent = c.title;
+      btn.onclick = () => {
+        // save current form to its case key first
+        setLS('isbar_form_' + caseId, form);
+        setLS('isbar_score_' + caseId, score);
+        setLS('isbar_feedback_' + caseId, feedback);
+        setLS('isbar_timer_' + caseId, seconds);
+        setLS('isbar_show_script_' + caseId, showScript);
+
+        caseId = c.id; setLS('isbar_case', caseId);
+        form = getLS('isbar_form_' + caseId, { identity:'', situation:'', background:'', assessment:'', recommendation:'' });
+        score = getLS('isbar_score_' + caseId, 0);
+        feedback = getLS('isbar_feedback_' + caseId, '');
+        seconds = getLS('isbar_timer_' + caseId, 0);
+        showScript = getLS('isbar_show_script_' + caseId, true);
+        timerOn = false;
+        renderSim();
+        renderCaseButtons();
+      };
+      wrap.appendChild(btn);
+    });
+  }
+
+  function badge(word, hit) {
+    const span = document.createElement('span');
+    span.className = `text-[11px] rounded-full px-2 py-1 border mr-1 mb-1 inline-block ${hit ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-zinc-50 text-zinc-500 border-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:border-zinc-700'}`;
+    span.textContent = word;
+    return span;
+  }
+
+  function computeHits() {
+    const sc = selectedCase();
+    const map = {};
+    for (const k of Object.keys(sc.keywords)) {
+      const words = sc.keywords[k];
+      const text = (form[k] || '').toLowerCase();
+      map[k] = words.map(w => ({ word: w, hit: text.includes(w.toLowerCase()) }));
+    }
+    return map;
+  }
+
+  function calcScore() {
+    const hits = computeHits();
+    let total = 0;
+    for (const k of Object.keys(hits)) {
+      const arr = hits[k];
+      const part = Math.round((arr.filter(x => x.hit).length / Math.max(1, arr.length)) * 25);
+      total += part;
+    }
+    const identityBonus = form.identity.trim().length > 10 ? 10 : 0;
+    score = Math.min(100, total + identityBonus);
+    setLS('isbar_score_' + caseId, score);
+    feedback = `Skor: ${score}%. ${score >= 80 ? "Cemerlang — ISBAR jelas dan tepat." : score >= 50 ? "Memuaskan — kemaskini kata kunci klinikal & rekomendasi." : "Perlu penambahbaikan — tambah butiran penting & strukturkan ayat."}`;
+    setLS('isbar_feedback_' + caseId, feedback);
+    renderScore();
+    alert(feedback);
+  }
+
+  function renderScore() {
+    const pill = $('#scorePill');
+    pill.textContent = `${score}%`;
+    pill.className = 'score-pill text-white text-xs font-semibold px-2.5 py-1 rounded-full ' + (score >= 80 ? 'bg-emerald-600' : score >= 50 ? 'bg-amber-600' : 'bg-rose-600');
+  }
+
+  function startTimerLoop() {
+    setInterval(() => {
+      if (!timerOn) return;
+      seconds += 1;
+      setLS('isbar_timer_' + caseId, seconds);
+      const m = Math.floor(seconds/60), s = seconds%60;
+      $('#timerPill').textContent = `Masa: ${m}m ${s}s`;
+    }, 1000);
+  }
+
+  function renderScript() {
+    const script =
+`I (Identiti): ${form.identity || "—"}
+
+S (Situation): ${form.situation || "—"}
+
+B (Background): ${form.background || "—"}
+
+A (Assessment): ${form.assessment || "—"}
+
+R (Recommendation): ${form.recommendation || "—"}`;
+    $('#scriptBox').textContent = script;
+
+    // script toggle knob
+    const knob = $('#scriptToggle span');
+    knob.classList.toggle('translate-x-7', showScript);
+    knob.classList.toggle('translate-x-1', !showScript);
+    $('#scriptBox').style.display = showScript ? '' : 'none';
+  }
+
+  function renderObjectivesHints() {
+    const sc = selectedCase();
+    const obj = $('#objectivesList'); obj.innerHTML = '';
+    sc.objectives.forEach(o => { const li = document.createElement('li'); li.textContent = o; obj.appendChild(li); });
+    const hints = $('#hintsList'); hints.innerHTML = '';
+    sc.hints.forEach(h => { const li = document.createElement('li'); li.textContent = h; hints.appendChild(li); });
+  }
+
+  function renderForm() {
+    const wrap = $('#formFields'); wrap.innerHTML = '';
+    const items = ['identity','situation','background','assessment','recommendation'];
+    const sc = selectedCase();
+
+    items.forEach(key => {
+      const f = document.createElement('div'); f.className = 'mb-4';
+      const label = document.createElement('label'); label.className = 'block text-sm font-medium text-zinc-700 dark:text-zinc-200 mb-1 uppercase tracking-wide';
+      label.textContent = key;
+      const ta = document.createElement('textarea');
+      ta.value = form[key] || '';
+      ta.placeholder = key === 'identity' ? 'Contoh: Nama, umur, RN, lokasi, katil' : 'Tulis ringkas, jelas & terstruktur';
+      ta.className = 'w-full min-h-[90px] rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white/80 dark:bg-zinc-900/70 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500';
+      ta.oninput = (e) => { form[key] = e.target.value; setLS('isbar_form_' + caseId, form); renderScript(); renderKeywordRow(); };
+
+      const hintRow = document.createElement('div'); hintRow.className = 'mt-1 text-[11px] text-zinc-500 dark:text-zinc-400';
+      const labelSpan = document.createElement('span'); labelSpan.textContent = 'Kata kunci (disyorkan): ';
+      hintRow.appendChild(labelSpan);
+
+      const rowWrap = document.createElement('span');
+      const words = sc.keywords[key === 'identity' ? 'situation' : key] || [];
+      const text = (form[key] || '').toLowerCase();
+      words.forEach(w => rowWrap.appendChild(badge(w, text.includes(w.toLowerCase()))));
+      hintRow.appendChild(rowWrap);
+
+      f.appendChild(label); f.appendChild(ta); f.appendChild(hintRow);
+      wrap.appendChild(f);
+    });
+
+    function renderKeywordRow() {
+      // refresh keyword badges per textarea
+      $$('#formFields > div').forEach((block, idx) => {
+        const key = items[idx];
+        const rowWrap = block.querySelector('div > span:last-child');
+        const ta = block.querySelector('textarea');
+        const words = sc.keywords[key === 'identity' ? 'situation' : key] || [];
+        rowWrap.innerHTML = '';
+        words.forEach(w => rowWrap.appendChild(badge(w, (ta.value || '').toLowerCase().includes(w.toLowerCase()))));
+      });
+    }
+  }
+
+  function renderSim() {
+    const sc = selectedCase();
+    $('#caseTag').textContent = `Kes: ${sc.title}`;
+    $('#levelPill').textContent = `Aras: ${sc.level}`;
+    const m = Math.floor(seconds/60), s = seconds%60;
+    $('#timerPill').textContent = `Masa: ${m}m ${s}s`;
+    renderScore();
+    renderForm();
+    renderScript();
+    renderObjectivesHints();
+  }
+
+  function renderQuiz() {
+    const cont = $('#quizContainer'); cont.innerHTML = '';
+    quiz.forEach((it, idx) => {
+      const card = document.createElement('div');
+      card.className = 'border rounded-2xl p-4 bg-white/80 dark:bg-zinc-900/70 border-zinc-200 dark:border-zinc-700';
+      const qDiv = document.createElement('div');
+      qDiv.className = 'font-medium mb-2';
+      qDiv.textContent = `${idx+1}. ${it.q}`;
+      const grid = document.createElement('div'); grid.className = 'grid grid-cols-1 md:grid-cols-2 gap-2';
+      it.options.forEach((op, j) => {
+        const lab = document.createElement('label');
+        const active = quizAnswers[idx] === j;
+        lab.className = `text-sm px-3 py-2 rounded-xl border cursor-pointer ${active ? 'bg-emerald-50 border-emerald-300 text-emerald-700' : 'bg-white dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700'}`;
+        const input = document.createElement('input');
+        input.type = 'radio'; input.name = `q-${idx}`; input.className = 'mr-2';
+        input.checked = active;
+        input.onchange = () => { quizAnswers = quizAnswers.map((v,k)=> k===idx? j : v); setLS('isbar_quiz', quizAnswers); renderQuiz(); };
+        lab.appendChild(input);
+        lab.appendChild(document.createTextNode(op));
+        grid.appendChild(lab);
+      });
+      card.appendChild(qDiv); card.appendChild(grid); cont.appendChild(card);
+    });
+    const qp = $('#quizScorePill');
+    qp.textContent = `${quizScore}%`;
+    qp.className = 'score-pill text-white text-xs font-semibold px-2.5 py-1 rounded-full ' + (quizScore >= 80 ? 'bg-emerald-600' : quizScore >= 50 ? 'bg-amber-600' : 'bg-rose-600');
+    updateProgress();
+  }
+
+  function submitQuiz() {
+    let s = 0; quiz.forEach((it, idx) => { if (quizAnswers[idx] === it.a) s++; });
+    quizScore = Math.round((s / quiz.length) * 100);
+    setLS('isbar_quiz_score', quizScore);
+    renderQuiz();
+    alert(`Skor kuiz: ${quizScore}%`);
+  }
+
+  function resetQuiz() {
+    quizAnswers = Array(quiz.length).fill(null);
+    quizScore = 0;
+    setLS('isbar_quiz', quizAnswers);
+    setLS('isbar_quiz_score', quizScore);
+    renderQuiz();
+  }
+
+  // ======= Events =======
+  function bindEvents() {
+    // Tabs
+    $$('.tab-btn').forEach(b => b.addEventListener('click', () => setActiveTab(b.dataset.tab)));
+
+    // Dark toggle
+    $('#darkToggle').addEventListener('click', () => { dark = !dark; applyDark(); });
+
+    // Script toggle
+    $('#scriptToggle').addEventListener('click', () => {
+      showScript = !showScript; setLS('isbar_show_script_' + caseId, showScript); renderScript();
+    });
+
+    // Timer
+    $('#timerBtn').addEventListener('click', () => {
+      timerOn = !timerOn;
+      $('#timerBtn').textContent = timerOn ? 'Pause Timer' : 'Mula Timer';
+    });
+
+    // Sample
+    $('#loadSampleBtn').addEventListener('click', () => {
+      const sc = selectedCase();
+      form = JSON.parse(JSON.stringify(sc.sample));
+      setLS('isbar_form_' + caseId, form);
+      renderSim();
+    });
+
+    // Score
+    $('#calcScoreBtn').addEventListener('click', calcScore);
+
+    // Reset
+    $('#resetBtn').addEventListener('click', () => {
+      form = { identity:'', situation:'', background:'', assessment:'', recommendation:'' };
+      score = 0; feedback = ''; seconds = 0; timerOn = false;
+      setLS('isbar_form_' + caseId, form);
+      setLS('isbar_score_' + caseId, score);
+      setLS('isbar_feedback_' + caseId, feedback);
+      setLS('isbar_timer_' + caseId, seconds);
+      renderSim();
+    });
+
+    // Download
+    $('#downloadBtn').addEventListener('click', () => {
+      const payload = {
+        timestamp: new Date().toISOString(),
+        case: caseId,
+        caseTitle: selectedCase().title,
+        secondsSpent: seconds,
+        form, score, feedback
+      };
+      download(`ISBAR_${caseId}_report.json`, JSON.stringify(payload, null, 2));
+    });
+
+    // Print
+    $('#printBtn').addEventListener('click', () => window.print());
+
+    // Quiz
+    $('#quizSubmit').addEventListener('click', submitQuiz);
+    $('#quizReset').addEventListener('click', resetQuiz);
+
+    // Collapsible cards
+    $$('.btn-mini').forEach(btn => btn.addEventListener('click', () => {
+      const sel = btn.getAttribute('data-toggle');
+      const el = document.querySelector(sel);
+      const hidden = el.style.display === 'none';
+      el.style.display = hidden ? '' : 'none';
+      btn.textContent = hidden ? 'Sembunyi' : 'Tunjuk';
+    }));
+  }
+
+  // ======= Section/Card helpers (styling) =======
+  function enhanceStyles() {
+    // Section styles (applied by class names in HTML)
+    $$('.section').forEach(sec => {
+      sec.classList.add('bg-white/90','dark:bg-zinc-900/80','rounded-2xl','shadow','p-5','md:p-6','mb-6','border','border-zinc-200','dark:border-zinc-800');
+    });
+    $$('.section-head .section-title').forEach(h => {
+      h.classList.add('text-xl','md:text-2xl','font-semibold','tracking-tight','text-zinc-800','dark:text-zinc-100');
+    });
+    $$('.card').forEach(c => c.classList.add('border','rounded-2xl','p-4','md:p-5','bg-white/70','dark:bg-zinc-900/70','border-zinc-200','dark:border-zinc-800'));
+    $$('.card-title').forEach(t => t.classList.add('font-semibold','text-zinc-800','dark:text-zinc-100'));
+  }
+
+  // ======= Init =======
+  (function init(){
+    $('#yearNow').textContent = new Date().getFullYear();
+    applyDark();
+    renderCaseButtons();
+    renderSim();
+    renderQuiz();
+    bindEvents();
+    enhanceStyles();
+    setActiveTab(tab);
+    startTimerLoop();
+  })();
+  </script>
 </body>
 </html>
