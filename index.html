@@ -1,694 +1,855 @@
 <!DOCTYPE html>
-<html lang="ms" class="h-full">
+<html lang="ms" class="scroll-smooth">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ISBAR Web Interaktif — Single-File HTML</title>
-
-  <!-- Tailwind (CDN) -->
-  <script>
-    window.tailwind = { config: { darkMode: 'class' } }
-  </script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ISBAR — Platform Latihan Interaktif</title>
   <script src="https://cdn.tailwindcss.com"></script>
-
-  <style>
-    @media print {
-      .no-print { display: none !important; }
-      .print-bg { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-      body { background: #fff !important; }
-    }
-  </style>
+  <link rel="stylesheet" href="assets/css/style.css" />
 </head>
-<body class="h-full min-h-screen bg-gradient-to-br from-emerald-50 to-white dark:from-zinc-950 dark:to-zinc-900 text-zinc-800 dark:text-zinc-100">
 
-  <!-- Header -->
-  <header class="sticky top-0 z-10 backdrop-blur bg-white/70 dark:bg-zinc-950/60 border-b border-zinc-200/70 dark:border-zinc-800 print:bg-white print:backdrop-blur-none print:dark:bg-white">
-    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <div class="h-9 w-9 rounded-xl bg-emerald-600 grid place-items-center text-white font-bold shadow print-bg">IS</div>
-        <div>
-          <h1 class="text-lg md:text-xl font-semibold">ISBAR Web Interaktif</h1>
-          <div class="text-[12px] text-zinc-500 dark:text-zinc-400">Latihan komunikasi klinikal untuk jururawat & pegawai perubatan</div>
+<body class="bg-slate-50 text-slate-800">
+
+  <!-- Mobile overlay -->
+  <div id="backdrop" class="backdrop lg:hidden"></div>
+
+  <div class="app-shell">
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar neo-sidebar bg-white border-r border-slate-200 lg:static lg:translate-x-0">
+      <div class="h-full flex flex-col">
+        <div class="px-5 py-5 border-b border-slate-200 flex items-center gap-3">
+          <div class="h-10 w-10 rounded-lg brand-chip grid place-items-center overflow-hidden">
+            <img src="assets/logo.png" alt="ISBAR Training" class="h-8 w-8 object-contain" width="32" height="32"
+              loading="eager" decoding="async" />
+          </div>
+          <div class="min-w-0">
+            <div class="font-extrabold text-slate-900 truncate">ISBAR Training</div>
+            <div class="text-xs text-slate-500 font-medium">Komunikasi Klinikal Interaktif</div>
+          </div>
         </div>
+
+        <nav class="flex-1 px-4 py-4 space-y-1">
+          <button class="nav-link active" data-tab="intro" data-url="modules/intro.html">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0h6" />
+            </svg>
+            Pengenalan
+          </button>
+
+          <button class="nav-link" data-tab="guide" data-url="modules/guide.html">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v12m6-6H6" />
+            </svg>
+            Panduan
+          </button>
+
+          <!-- NOTE: data-url now on the BUTTON, SVG is clean -->
+          <button class="nav-link" data-tab="sim" data-url="modules/simulation.html">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+            </svg>
+            Simulasi
+          </button>
+
+          <button class="nav-link" data-tab="quiz" data-url="modules/quiz.html">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            Kuiz
+          </button>
+
+          <button class="nav-link" data-tab="resources" data-url="modules/resources.html">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 8c-1.657 0-3 .895-3 2v6m6-8c1.657 0 3 .895 3 2v6M6 20h12" />
+            </svg>
+            Sumber
+          </button>
+        </nav>
       </div>
-      <div class="flex items-center gap-3 no-print">
-        <div class="hidden md:block w-56"><div id="progressBar" class="w-full bg-zinc-200 dark:bg-zinc-800 h-3 rounded-full overflow-hidden"><div id="progressFill" class="h-3 bg-emerald-500 transition-all" style="width:20%"></div></div></div>
-        <button id="darkToggle" class="relative inline-flex h-7 w-14 items-center rounded-full border transition bg-zinc-300 dark:bg-zinc-700 border-zinc-400 dark:border-zinc-600" aria-label="toggle theme">
-          <span class="inline-block h-6 w-6 transform rounded-full bg-white shadow transition translate-x-1"></span>
-        </button>
-      </div>
-    </div>
-  </header>
+    </aside>
 
-  <!-- Main -->
-  <main class="max-w-6xl mx-auto px-4 py-6 md:py-8">
-
-    <!-- Tabs -->
-    <div class="flex flex-wrap gap-2 mb-5 no-print">
-      <button data-tab="intro" class="tab-btn px-4 py-2 rounded-xl text-sm font-medium border transition shadow-sm bg-emerald-600 text-white border-emerald-700">Pengenalan</button>
-      <button data-tab="guide" class="tab-btn px-4 py-2 rounded-xl text-sm font-medium border transition shadow-sm bg-white/70 dark:bg-zinc-900/60 text-zinc-700 dark:text-zinc-200 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-800">Panduan ISBAR</button>
-      <button data-tab="sim"   class="tab-btn px-4 py-2 rounded-xl text-sm font-medium border transition shadow-sm bg-white/70 dark:bg-zinc-900/60 text-zinc-700 dark:text-zinc-200 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-800">Simulasi</button>
-      <button data-tab="quiz"  class="tab-btn px-4 py-2 rounded-xl text-sm font-medium border transition shadow-sm bg-white/70 dark:bg-zinc-900/60 text-zinc-700 dark:text-zinc-200 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-800">Kuiz</button>
-      <button data-tab="resources" class="tab-btn px-4 py-2 rounded-xl text-sm font-medium border transition shadow-sm bg-white/70 dark:bg-zinc-900/60 text-zinc-700 dark:text-zinc-200 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-800">Sumber</button>
-    </div>
-
-    <!-- Intro -->
-    <section id="tab-intro" class="tab-panel">
-      <div class="section">
-        <div class="section-head">
-          <h2 class="section-title">Objektif Pembelajaran</h2>
-        </div>
-        <div class="section-body">
-          <ul class="list-disc pl-5 text-sm">
-            <li>Mengaplikasi rangka ISBAR untuk komunikasi klinikal yang selamat</li>
-            <li>Menyusun informasi pesakit secara ringkas, tepat & relevan</li>
-            <li>Menyatakan rekomendasi yang jelas, masa tindakan & eskalasi</li>
-          </ul>
-        </div>
-      </div>
-      <div class="section">
-        <div class="section-head">
-          <h2 class="section-title">Cara Guna Modul</h2>
-        </div>
-        <div class="section-body">
-          <ol class="list-decimal pl-5 text-sm">
-            <li>Baca <b>Panduan ISBAR</b> dan semak template.</li>
-            <li>Pilih <b>kes simulasi</b> & isi medan I-S-B-A-R. Guna kata kunci.</li>
-            <li>Klik <b>Jana Skor</b> untuk maklum balas segera.</li>
-            <li>Cetak/Simpan PDF untuk sijil/rekod latihan; muat turun laporan JSON untuk audit.</li>
-          </ol>
-        </div>
-      </div>
-    </section>
-
-    <!-- Guide -->
-    <section id="tab-guide" class="tab-panel hidden">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
-        <div>
-          <div class="card">
-            <div class="card-head"><h3 class="card-title">I — Identity (Identiti)</h3></div>
-            <div class="card-body text-sm">Perkenalkan diri & pesakit secara ringkas: nama, umur, RN, lokasi/katil. Contoh: "Saya Nazif, penyelia di ED. Pesakit Ahmad 62 tahun, RN B912345, Zon Merah Katil 7."</div>
+    <!-- Main column -->
+    <div class="flex flex-col min-w-0">
+      <!-- Top bar -->
+      <header class="sticky top-0 z-30 bg-white/90 backdrop-blur border-b border-slate-200">
+        <div class="px-4 sm:px-6 lg:px-8 py-3 flex items-center gap-3">
+          <!-- <button id="mobileToggle" class="lg:hidden btn" aria-label="Toggle menu">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                  </button> -->
+          <div class="flex-1 min-w-0">
+            <div class="text-xs text-slate-500 font-medium">ISBAR</div>
+            <h1 class="text-lg sm:text-xl font-extrabold text-slate-900 truncate">Platform Latihan Interaktif</h1>
           </div>
-          <div class="card">
-            <div class="card-head"><h3 class="card-title">S — Situation (Situasi)</h3></div>
-            <div class="card-body text-sm">Nyatakan sebab panggilan & isu utama yang <b>time-critical</b>. Contoh: "Slurred speech dan left weakness, onset 45 minit lalu; FAST positif."</div>
-          </div>
-          <div class="card">
-            <div class="card-head"><h3 class="card-title">B — Background (Latar Belakang)</h3></div>
-            <div class="card-body text-sm">Maklumat klinikal penting: diagnosis lampau, comorbid, ubat/alergi, kejadian berkaitan.</div>
-          </div>
-          <div class="card">
-            <div class="card-head"><h3 class="card-title">A — Assessment (Penilaian)</h3></div>
-            <div class="card-body text-sm">Ringkasan klinikal: vital signs, pemerhatian, keputusan awal (ECG/CT/CXR), skor (contoh NIHSS/GCS).</div>
-          </div>
-          <div class="card">
-            <div class="card-head"><h3 class="card-title">R — Recommendation (Rekomendasi)</h3></div>
-            <div class="card-body text-sm">Nyatakan <b>apa yang anda perlukan</b>, tempoh masa, dan eskalasi. Contoh: "Mohon review neuro segera & CT brain sekarang; pertimbang thrombolysis jika layak."</div>
-          </div>
-        </div>
-        <div>
-          <div class="section">
-            <div class="section-head"><h2 class="section-title">Contoh Ringkas (Template)</h2></div>
-            <div class="section-body">
-              <pre class="text-sm whitespace-pre-wrap bg-white/70 dark:bg-zinc-900/70 p-4 rounded-xl border border-zinc-200 dark:border-zinc-700">{`I: Saya [Nama], [Jawatan] di [Lokasi]. Pesakit [Nama], [Umur] tahun, RN [No], [Lokasi/Katil].
-S: [Sebab panggilan] — [isu utama/time-critical].
-B: [Diagnosis/comorbid], [ubat/alergi relevan], [perkara berkaitan].
-A: [Vitals], [pemerhatian utama], [ujian/imej], [skor].
-R: Saya perlukan [Tindakan] dalam [Masa]. Jika [X], eskalasi kepada [Y].`}</pre>
+        
+          <div class="hidden lg:flex items-center gap-4">
+            <div class="text-xs text-slate-500 mb-2 font-semibold uppercase">Kemajuan</div>
+            <div class="progress-bar">
+              <div id="mainProgress" class="progress-fill"></div>
+            </div>
+            <div class="mt-2 text-sm">
+              <span class="text-slate-600">Selesai:</span>
+              <span id="headerProgress" class="font-extrabold" style="color:var(--brand)">0%</span>
             </div>
           </div>
-          <div class="section">
-            <div class="section-head"><h2 class="section-title">Checklist Kualiti ISBAR</h2></div>
-            <div class="section-body">
-              <ul class="list-disc pl-5 text-sm">
-                <li>Ringkas (≤60–90 saat), berstruktur & jelas</li>
-                <li>Gunakan kata kunci klinikal yang tepat</li>
-                <li>R mengandungi tindakan, masa & eskalasi</li>
-                <li>Tutup dengan confirmation: "Adakah jelas? Ada arahan tambahan?"</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Simulation -->
-    <section id="tab-sim" class="tab-panel hidden">
-      <div class="section">
-        <div class="section-head">
-          <h2 class="section-title">Pilih Kes</h2>
-        </div>
-        <div id="caseButtons" class="section-body flex flex-wrap gap-3"></div>
-      </div>
-
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
-        <!-- Left: form & actions -->
-        <div>
-          <div class="flex items-center gap-2 flex-wrap mb-3">
-            <span id="caseTag" class="badge-emerald">Kes: —</span>
-            <span id="levelPill" class="pill">Aras: —</span>
-            <span id="timerPill" class="pill">Masa: 0m 0s</span>
-            <span id="scorePill" class="score-pill bg-rose-600">0%</span>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4 no-print">
-            <button id="timerBtn" class="btn">Mula Timer</button>
-            <button id="loadSampleBtn" class="btn">Muatkan Contoh Teks</button>
-            <button id="calcScoreBtn" class="btn-emerald">Jana Skor & Maklum Balas</button>
-            <button id="resetBtn" class="btn-rose">Set Semula</button>
-          </div>
-
-          <div id="formFields"></div>
-
-          <div class="flex flex-wrap gap-3 mt-4 no-print">
-            <button id="downloadBtn" class="btn">Muat Turun Laporan (.json)</button>
-            <button id="printBtn" class="btn">Cetak / Simpan PDF</button>
-          </div>
-        </div>
-
-        <!-- Right: script preview + cards -->
-        <div>
-          <div class="flex items-center justify-between mb-2">
-            <h3 class="font-semibold text-zinc-800 dark:text-zinc-100">Pratonton Skrip Panggilan</h3>
-            <button id="scriptToggle" class="relative inline-flex h-7 w-14 items-center rounded-full border transition bg-zinc-300 dark:bg-zinc-700 border-zinc-400 dark:border-zinc-600 no-print" aria-label="toggle script">
-              <span class="inline-block h-6 w-6 transform rounded-full bg-white shadow transition translate-x-1"></span>
+          <!-- <div class="hidden md:flex items-center gap-2">
+            <button id="printBtn" class="btn no-print">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+              </svg>
+              Cetak PDF
             </button>
-          </div>
-          <div id="scriptBox" class="border rounded-2xl p-4 bg-white/80 dark:bg-zinc-900/70 border-zinc-200 dark:border-zinc-700 whitespace-pre-wrap text-sm"></div>
+            <button id="downloadBtn" class="btn no-print">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              Muat Turun JSON
+            </button>
+          </div> -->
+        </div>
+      </header>
 
-          <div class="mt-4 space-y-3">
-            <div class="card">
-              <div class="card-head flex items-center justify-between"><h3 class="card-title">Objektif Latihan</h3><button data-toggle="#obj-card" class="btn-mini">Sembunyi</button></div>
-              <div id="obj-card" class="card-body text-sm"><ul id="objectivesList" class="list-disc pl-5"></ul></div>
+      <!-- Content -->
+      <main class="flex-1 px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+        <!-- Intro -->
+        <section id="view-intro" class="view-panel">
+          <div class="card p-6">
+            <!-- <h2 class="text-xl font-extrabold text-slate-900 mb-3">Pengenalan</h2> -->
+            <div id="introHost" class="text-slate-700 min-w-0 break-words">
+              <!-- Loaded from modules/intro.html if available -->
             </div>
-            <div class="card">
-              <div class="card-head flex items-center justify-between"><h3 class="card-title">Hint Klinikal</h3><button data-toggle="#hint-card" class="btn-mini">Sembunyi</button></div>
-              <div id="hint-card" class="card-body text-sm"><ul id="hintsList" class="list-disc pl-5"></ul></div>
+          </div>
+        </section>
+
+        <!-- Guide -->
+        <section id="view-guide" class="view-panel hidden">
+          <div class="card p-6">
+            <!-- <h2 class="text-xl font-extrabold text-slate-900 mb-3">Panduan</h2> -->
+            <div id="guideHost" class="prose max-w-none text-slate-700"></div>
+          </div>
+        </section>
+
+        <!-- Simulation -->
+        <section id="view-sim" class="view-panel hidden">
+          <!-- Top row: case selection -->
+          <div class="card p-6">
+            <div class="flex items-center justify-between gap-4 flex-wrap mb-4">
+              <div>
+                <h2 class="text-xl font-extrabold text-slate-900">Simulasi</h2>
+                <p class="text-sm text-slate-600">Pilih kes latihan dan bina skrip ISBAR anda.</p>
+              </div>
+            </div>
+            <div id="caseButtons" class="grid md:grid-cols-3 gap-4"></div>
+          </div>
+
+          <!-- 2-column workspace -->
+          <div class="grid xl:grid-cols-[1.1fr_0.9fr] gap-6">
+            <!-- Left column -->
+            <div class="min-w-0 space-y-6">
+              <!-- Meta -->
+              <div class="card p-5">
+                <div class="grid sm:grid-cols-4 gap-4">
+                  <div>
+                    <div class="text-xs text-slate-500 font-semibold uppercase">Kes Dipilih</div>
+                    <div id="caseTag" class="font-bold text-slate-900">—</div>
+                  </div>
+                  <div>
+                    <div class="text-xs text-slate-500 font-semibold uppercase">Aras</div>
+                    <div id="levelPill" class="pill">—</div>
+                  </div>
+                  <div>
+                    <div class="text-xs text-slate-500 font-semibold uppercase">Masa</div>
+                    <div id="timePill" class="font-semibold text-slate-800">0m 0s</div>
+                  </div>
+                  <div>
+                    <div class="text-xs text-slate-500 font-semibold uppercase">Skor</div>
+                    <div id="scorePill" class="pill">0%</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Actions -->
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 no-print">
+                <button id="timerBtn" class="btn">Mula Timer</button>
+                <button id="loadSampleBtn" class="btn">Muat Contoh</button>
+                <button id="calcBtn" class="btn-success">Jana Skor</button>
+                <button id="resetBtn" class="btn-danger">Reset</button>
+              </div>
+
+              <!-- Inputs -->
+              <div id="inputsWrap" class="space-y-5"></div>
+            </div>
+
+            <!-- Right column (sticky) -->
+            <div class="min-w-0 space-y-6">
+              <div class="card p-5">
+                <div class="flex items-center justify-between mb-3">
+                  <h3 class="font-extrabold text-slate-900">Pratonton Skrip</h3>
+                  <button id="scriptToggle" class="btn btn-primary">
+                    Tunjuk/Sorok
+                  </button>
+                </div>
+                <pre id="scriptBox"
+                  class="text-sm bg-slate-50 border border-slate-200 p-4 rounded-lg overflow-auto max-h-[420px] whitespace-pre-wrap font-medium"></pre>
+              </div>
+
+              <div class="card p-5">
+                <h3 class="font-extrabold text-slate-900 mb-2">Objektif Latihan</h3>
+                <ul id="objList" class="space-y-2 text-sm"></ul>
+              </div>
+
+              <div class="card p-5">
+                <h3 class="font-extrabold text-slate-900 mb-2">Hint Klinikal</h3>
+                <ul id="hintList" class="space-y-2 text-sm"></ul>
+              </div>
+
+              <div id="feedbackBox" class="card p-5 text-center font-bold text-slate-900 hidden"></div>
             </div>
           </div>
-        </div>
-      </div>
-    </section>
+        </section>
 
-    <!-- Quiz -->
-    <section id="tab-quiz" class="tab-panel hidden">
-      <div class="section">
-        <div class="section-head flex items-center justify-between">
-          <h2 class="section-title">Penilaian Pengetahuan (MCQ)</h2>
-          <span id="quizScorePill" class="score-pill bg-rose-600">0%</span>
-        </div>
-        <div id="quizContainer" class="space-y-4 mt-3"></div>
-        <div class="flex gap-3 mt-4 no-print">
-          <button id="quizSubmit" class="btn-emerald">Semak Skor</button>
-          <button id="quizReset" class="btn">Reset</button>
-        </div>
-      </div>
-    </section>
+        <!-- Quiz -->
+        <section id="view-quiz" class="view-panel hidden">
+          <div class="card p-6">
+            <div class="flex items-center justify-between gap-4 flex-wrap mb-4">
+              <div>
+                <h2 class="text-xl font-extrabold text-slate-900">Penilaian Pengetahuan</h2>
+                <p class="text-sm text-slate-600">Jawab soalan pilihan berganda di bawah.</p>
+              </div>
+              <div id="quizScorePill" class="pill">0%</div>
+            </div>
+            <div id="quizWrap"></div>
+            <div class="flex gap-3 mt-6 flex-wrap">
+              <button id="quizSubmit" class="btn btn-success">Semak Skor</button>
+              <button id="quizReset" class="btn">Reset Kuiz</button>
+            </div>
+          </div>
+        </section>
 
-    <!-- Resources -->
-    <section id="tab-resources" class="tab-panel hidden">
-      <div class="section">
-        <div class="section-head">
-          <h2 class="section-title">Sumber & Rujukan (Ringkas)</h2>
-        </div>
-        <div class="section-body">
-          <ul class="list-disc pl-5 text-sm">
-            <li>SBAR/ISBAR frameworks — WHO Patient Safety & Institute for Healthcare Improvement (IHI)</li>
-            <li>Komunikasi efektif semasa handover & eskalasi klinikal (garis panduan hospital setempat)</li>
-            <li>Cadangan: tambah video demonstrasi dalaman & borang audit kualiti</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-  </main>
+        <!-- Resources -->
+        <section id="view-resources" class="view-panel hidden">
+          <div class="card p-6">
+            <h2 class="text-xl font-extrabold text-slate-900 mb-3">Sumber</h2>
+            <div id="resourcesHost" class="prose max-w-none text-slate-700"></div>
+          </div>
+        </section>
 
-  <!-- Footer -->
-  <footer class="max-w-6xl mx-auto px-4 pb-10 text-xs text-zinc-500 dark:text-zinc-400">
-    © <span id="yearNow"></span> ISBAR Web Interaktif — latihan dalaman. Simpan PDF untuk rekod CPD.
-  </footer>
+      </main>
+
+      <!-- Footer -->
+      <footer class="border-t border-slate-200 bg-white">
+        <div class="px-4 sm:px-6 lg:px-8 py-6 text-sm text-slate-600 text-center">
+          © <span id="yearNow"></span> ISBAR Training Platform — Latihan dalaman untuk CPD
+        </div>
+      </footer>
+    </div>
+  </div>
 
   <script>
-  // ======= Data (cases & quiz) =======
-  const cases = [
-    {
-      id: "stroke",
-      title: "Acute Ischaemic Stroke (ED: Zon Merah)",
-      level: "Intermediate",
-      objectives: [
-        "Kenal pasti kata kunci FAST, CTA/CT Brain, tPA/Thrombectomy window",
-        "Bentukkan rekomendasi jelas (neuro review segera)"
-      ],
-      hints: [
-        "Face droop, Arm weakness, Speech difficulty, Time (FAST)",
-        "CT brain, onset time, BP, GCS"
-      ],
-      keywords: {
-        situation: ["stroke", "slurred", "weakness", "FAST", "onset"],
-        background: ["hypertension", "diabetes", "antiplatelet", "AF", "smoker"],
-        assessment: ["GCS", "BP", "CT", "facial", "hemiparesis", "NIHSS"],
-        recommendation: ["CT", "neuro", "thrombolysis", "thrombectomy", "monitor"]
-      },
-      sample: {
-        identity: "Nama: Ahmad, Umur: 62, RN: B912345, Lokasi: ED Zon Merah, Katil 7",
-        situation: "Pesakit datang dengan slurred speech dan kelemahan bahagian kiri badan, onset sekitar 45 minit lalu; FAST positif.",
-        background: "Sejarah HTN 10 tahun, DM, on aspirin. Tiada trauma kepala. Gula kap 8.7.",
-        assessment: "GCS 14 (E4V4M6), BP 178/96, HR 88, SpO2 97% RA. Facial asymmetry. Sedang menunggu CT brain.",
-        recommendation: "Mohon penilaian neurologi segera dan keutamaan CT brain. Pertimbangkan thrombolysis jika memenuhi kriteria; saran pemantauan BP ketat."
+    /* -------------------- Utilities -------------------- */
+    const qs = (sel, root = document) => root.querySelector(sel)
+    const qsa = (sel, root = document) => Array.from(root.querySelectorAll(sel))
+
+    /* -------------------- Module Loader -------------------- */
+    const moduleCache = new Map()
+
+    async function loadHTML(url) {
+      if (!url) return ''
+      if (!moduleCache.has(url)) {
+        const res = await fetch(url, { cache: 'no-store' })
+        if (!res.ok) throw new Error(res.status + ' ' + res.statusText)
+        const html = await res.text()
+        moduleCache.set(url, html)
       }
-    },
-    {
-      id: "sepsis",
-      title: "Sepsis — Suspected Pneumonia (ED: Zon Kuning)",
-      level: "Intermediate",
-      objectives: [
-        "Kenal pasti red flags sepsis & resus 1 jam",
-        "Komunikasi jelas untuk antibiotik awal dan kultur"
-      ],
-      hints: [
-        "Vitals, lactate, cultures, antibiotics within 1 hour",
-        "Urine output, oxygen, fluid bolus"
-      ],
-      keywords: {
-        situation: ["fever", "tachy", "hypotension", "sepsis", "pneumonia"],
-        background: ["COPD", "DM", "immuno", "recent infection", "aspiration"],
-        assessment: ["RR", "lactate", "cultures", "WBC", "CXR", "SpO2"],
-        recommendation: ["antibiotics", "cultures", "fluids", "O2", "monitor"]
+      return moduleCache.get(url)
+    }
+
+    /* -------------------- Data -------------------- */
+    const cases = [
+      {
+        id: "stroke",
+        title: "Acute Ischaemic Stroke",
+        subtitle: "ED: Zon Merah",
+        level: "Intermediate",
+        objectives: [
+          "Kenal pasti kata kunci FAST, CTA/CT Brain, tPA/Thrombectomy window",
+          "Bentukkan rekomendasi jelas (neuro review segera)"
+        ],
+        hints: [
+          "Face droop, Arm weakness, Speech difficulty, Time (FAST)",
+          "CT brain, onset time, BP, GCS"
+        ],
+        keywords: {
+          situation: ["stroke", "slurred", "weakness", "FAST", "onset"],
+          background: ["hypertension", "diabetes", "antiplatelet", "AF", "smoker"],
+          assessment: ["GCS", "BP", "CT", "facial", "hemiparesis", "NIHSS"],
+          recommendation: ["CT", "neuro", "thrombolysis", "thrombectomy", "monitor"]
+        },
+        sample: {
+          identity: "Nama: Ahmad, Umur: 62, RN: B912345, Lokasi: ED Zon Merah, Katil 7",
+          situation: "Pesakit datang dengan slurred speech dan kelemahan bahagian kiri badan, onset sekitar 45 minit lalu; FAST positif.",
+          background: "Sejarah HTN 10 tahun, DM, on aspirin. Tiada trauma kepala. Gula kap 8.7.",
+          assessment: "GCS 14 (E4V4M6), BP 178/96, HR 88, SpO2 97% RA. Facial asymmetry. Sedang menunggu CT brain.",
+          recommendation: "Mohon penilaian neurologi segera dan keutamaan CT brain. Pertimbangkan thrombolysis jika memenuhi kriteria; saran pemantauan BP ketat."
+        }
       },
-      sample: {
-        identity: "Nama: Pn. Salmah, Umur: 70, RN: C778899, Lokasi: ED Zon Kuning, Katil 12",
-        situation: "Demam tinggi, batuk berkahak, RR 28/min, SpO2 90% RA. Disyaki pneumonia dengan sepsis.",
-        background: "DM, COPD, pernah warded tahun lepas kerana pneumonia.",
-        assessment: "BP 94/60, HR 118, T 39.2, CXR menunjukkan infiltrates. WBC tinggi; laktat sedang diproses.",
-        recommendation: "Mohon antibiotik spektrum luas segera, ambil kultur darah/sputum, bolus cecair 30 ml/kg, oksigen titrasi, pemantauan ketat."
-      }
-    },
-    {
-      id: "mi",
-      title: "STEMI — Anterior (ED: Zon Merah)",
-      level: "Advanced",
-      objectives: [
-        "Kenal pasti STEMI dan aktivasi reperfusi",
-        "Koordinasi cepat (door-to-balloon/needle time)"
-      ],
-      hints: [
-        "ECG ST elevation, troponin, antiplatelets, cardiology activation",
-        "Time of onset, contraindications"
-      ],
-      keywords: {
-        situation: ["chest pain", "ST elevation", "MI", "STEMI", "sweating"],
-        background: ["HTN", "DM", "smoker", "statin", "previous MI"],
-        assessment: ["ECG", "troponin", "pain score", "BP", "O2"],
-        recommendation: ["cardio", "PCI", "thrombolysis", "antiplatelet", "heparin"]
+      {
+        id: "sepsis",
+        title: "Sepsis Pneumonia",
+        subtitle: "ED: Zon Kuning",
+        level: "Intermediate",
+        objectives: [
+          "Kenal pasti red flags sepsis & resus 1 jam",
+          "Komunikasi jelas untuk antibiotik awal dan kultur"
+        ],
+        hints: [
+          "Vitals, lactate, cultures, antibiotics within 1 hour",
+          "Urine output, oxygen, fluid bolus"
+        ],
+        keywords: {
+          situation: ["fever", "tachy", "hypotension", "sepsis", "pneumonia"],
+          background: ["COPD", "DM", "immuno", "recent infection", "aspiration"],
+          assessment: ["RR", "lactate", "cultures", "WBC", "CXR", "SpO2"],
+          recommendation: ["antibiotics", "cultures", "fluids", "O2", "monitor"]
+        },
+        sample: {
+          identity: "Nama: Pn. Salmah, Umur: 70, RN: C778899, Lokasi: ED Zon Kuning, Katil 12",
+          situation: "Demam tinggi, batuk berkahak, RR 28/min, SpO2 90% RA. Disyaki pneumonia dengan sepsis.",
+          background: "DM, COPD, pernah warded tahun lepas kerana pneumonia.",
+          assessment: "BP 94/60, HR 118, T 39.2, CXR menunjukkan infiltrates. WBC tinggi; laktat sedang diproses.",
+          recommendation: "Mohon antibiotik spektrum luas segera, ambil kultur darah/sputum, bolus cecair 30 ml/kg, oksigen titrasi, pemantauan ketat."
+        }
       },
-      sample: {
-        identity: "Nama: En. Razak, Umur: 58, RN: D667700, Lokasi: ED Zon Merah, Katil 2",
-        situation: "Sakit dada central, berpeluh, bermula 30 minit lalu. ECG menunjukkan ST elevasi anterior.",
-        background: "HTN, DM, perokok tegar, tiada sejarah pendarahan GI.",
-        assessment: "BP 150/90, HR 102, SpO2 96% RA. Troponin pertama belum keluar. Pain score 8/10.",
-        recommendation: "Mohon aktifkan pasukan kardiologi untuk PCI segera, sediakan antiplatelet dan heparin, pastikan consent & persediaan transfer ke cath lab."
+      {
+        id: "mi",
+        title: "STEMI Anterior",
+        subtitle: "ED: Zon Merah",
+        level: "Advanced",
+        objectives: [
+          "Kenal pasti STEMI dan aktivasi reperfusi",
+          "Koordinasi cepat (door-to-balloon/needle time)"
+        ],
+        hints: [
+          "ECG ST elevation, troponin, antiplatelets, cardiology activation",
+          "Time of onset, contraindications"
+        ],
+        keywords: {
+          situation: ["chest pain", "ST elevation", "MI", "STEMI", "sweating"],
+          background: ["HTN", "DM", "smoker", "statin", "previous MI"],
+          assessment: ["ECG", "troponin", "pain score", "BP", "O2"],
+          recommendation: ["cardio", "PCI", "thrombolysis", "antiplatelet", "heparin"]
+        },
+        sample: {
+          identity: "Nama: En. Razak, Umur: 58, RN: D667700, Lokasi: ED Zon Merah, Katil 2",
+          situation: "Sakit dada central, berpeluh, bermula 30 minit lalu. ECG menunjukkan ST elevasi anterior.",
+          background: "HTN, DM, perokok tegar, tiada sejarah pendarahan GI.",
+          assessment: "BP 150/90, HR 102, SpO2 96% RA. Troponin pertama belum keluar. Pain score 8/10.",
+          recommendation: "Mohon aktifkan pasukan kardiologi untuk PCI segera, sediakan antiplatelet dan heparin, pastikan consent & persediaan transfer ke cath lab."
+        }
+      }
+    ]
+
+    const questions = [
+      { q: "Komponen manakah yang PALING sesuai untuk menyatakan keperluan tindakan segera?", options: ["Situation", "Background", "Assessment", "Recommendation"], a: 3 },
+      { q: "Dalam ISBAR, maklumat 'ubat sedia ada & alergi' lazimnya ditempatkan di?", options: ["Identity", "Background", "Assessment", "Recommendation"], a: 1 },
+      { q: "Contoh ayat yang baik dalam 'Assessment' ialah...", options: ["'Saya rasa pesakit ni tak apa-apa'", "'Tanda vital stable'", "'GCS 14, BP 178/96, facial asymmetry, CT brain pending'", "'Sila doktor tentukan'"], a: 2 },
+      { q: "Apakah ciri utama komunikasi ISBAR yang baik?", options: ["Panjang & terperinci tanpa struktur", "Berstruktur, ringkas, jelas, ada cadangan", "Banyak istilah kompleks", "Bebas mengikut kreativiti"], a: 1 },
+      { q: "Elemen 'Identity' yang bagus mengandungi...", options: ["Nama pesakit sahaja", "Nama + umur + RN + lokasi/katil", "Diagnosis terbaru sahaja", "Nombor telefon waris"], a: 1 },
+      { q: "'Time critical' lazimnya perlu dinyatakan dalam komponen...", options: ["Situation", "Background", "Assessment", "Recommendation"], a: 3 }
+    ]
+
+    /* -------------------- State -------------------- */
+    const state = {
+      tab: 'intro',
+      caseId: cases[0].id,
+      timerOn: false,
+      seconds: 0,
+      showScript: true,
+      score: 0,
+      feedback: '',
+      form: { identity: '', situation: '', background: '', assessment: '', recommendation: '' },
+      quizAnswers: Array(questions.length).fill(null),
+      quizSubmitted: false,
+      quizScore: 0,
+    }
+    let timerInt = null
+
+    /* -------------------- Helpers -------------------- */
+    function selectedCase() { return cases.find(c => c.id === state.caseId) }
+    function scoreColor(pct) {
+      return pct >= 80 ? 'bg-gradient-to-r from-emerald-500 to-emerald-700 text-white'
+        : pct >= 50 ? 'bg-gradient-to-r from-amber-500 to-amber-700 text-white'
+          : 'bg-gradient-to-r from-red-500 to-red-700 text-white'
+    }
+    function badge(word, hit) {
+      return `<span class="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-semibold ${hit ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-slate-50 text-slate-600 border border-slate-200'} mr-2 mb-2">${word}</span>`
+    }
+    function download(filename, text) {
+      const el = document.createElement('a')
+      el.href = 'data:text/json;charset=utf-8,' + encodeURIComponent(text)
+      el.download = filename
+      document.body.appendChild(el); el.click(); el.remove()
+    }
+
+    /* -------------------- Nav / Views -------------------- */
+    async function setActiveTab(id) {
+      // Sidebar active state
+      qsa('.nav-link').forEach(b => b.classList.toggle('active', b.dataset.tab === id))
+
+      // Show the chosen view
+      qsa('.view-panel').forEach(v => v.classList.add('hidden'))
+      const view = qs('#view-' + id)
+      view.classList.remove('hidden')
+
+      // Find URL for this tab (if any)
+      const btn = qsa('.nav-link').find(b => b.dataset.tab === id)
+      const url = btn?.dataset.url
+
+      // === INTRO TAB ===
+      if (id === 'intro' && url) {
+        try {
+          qs('#introHost').innerHTML = await loadHTML(url)
+        } catch (e) {
+          qs('#introHost').innerHTML = `<div class="text-sm text-slate-600">Gagal memuatkan modul: ${e.message}</div>`
+        }
+      }
+
+      // === GUIDE TAB ===
+      else if (id === 'guide' && url) {
+        try {
+          // Load guide.html fully
+          const html = await loadHTML(url)
+
+          // Inject into #guideHost (inside the card)
+          const host = qs('#guideHost')
+          host.innerHTML = html
+          host.style.display = 'block'
+
+          // Move the <style> from guide.html into <head>
+          const temp = document.createElement('div')
+          temp.innerHTML = html
+          const styleTag = temp.querySelector('style')
+          if (styleTag) document.head.appendChild(styleTag.cloneNode(true))
+
+          // Make sure checklist text and tick icons show
+          host.querySelectorAll('li').forEach(li => {
+            li.style.display = 'flex'
+            li.style.alignItems = 'flex-start'
+            li.style.gap = '0.75rem'
+            li.style.color = '#0f172a'
+          })
+
+          host.querySelectorAll('.tick').forEach(svg => {
+            svg.style.width = '1.125rem'
+            svg.style.height = '1.125rem'
+            svg.style.color = '#059669'
+            svg.style.flexShrink = '0'
+            svg.style.marginTop = '0.15rem'
+            svg.querySelectorAll('path').forEach(p => p.setAttribute('fill', 'currentColor'))
+          })
+
+        } catch (e) {
+          qs('#guideHost').innerHTML = `<div class="text-sm text-slate-600">Gagal memuatkan modul: ${e.message}</div>`
+        }
+      }
+
+      // === RESOURCES TAB ===
+      else if (id === 'resources' && url) {
+        try {
+          qs('#resourcesHost').innerHTML = await loadHTML(url)
+        } catch (e) {
+          qs('#resourcesHost').innerHTML = `<div class="text-sm text-slate-600">Gagal memuatkan modul: ${e.message}</div>`
+        }
+      }
+
+      // === SIMULATION & QUIZ TABS ===
+      else if ((id === 'sim' || id === 'quiz') && url) {
+        try {
+          view.innerHTML = await loadHTML(url)
+        } catch (e) {
+          view.innerHTML = `<div class="text-sm text-slate-600">Gagal memuatkan modul: ${e.message}</div>`
+        }
+
+        // Wire up dynamic UI
+        if (id === 'sim') {
+          renderCaseButtons()
+          renderMeta()
+          renderInputs()
+          renderScript()
+          renderSideLists()
+        } else {
+          renderQuiz()
+        }
+      }
+
+      // === Update state & UI ===
+      state.tab = id
+      refreshProgress()
+      closeMobileSidebar()
+    }
+
+    function refreshProgress() {
+      let p = state.tab === 'intro' ? 20 : state.tab === 'guide' ? 40 : state.tab === 'sim' ? 60 : state.tab === 'quiz' ? 80 : 20
+      if (state.score >= 80) p = Math.max(p, 75)
+      if (state.quizScore >= 80) p = 100
+      qs('#mainProgress').style.width = p + '%'
+      qs('#headerProgress').textContent = p + '%'
+    }
+
+    /* -------------------- Simulation UI -------------------- */
+    function renderCaseButtons() {
+      const wrap = qs('#caseButtons')
+      wrap.innerHTML = cases.map(c => `
+        <button data-case="${c.id}" class="card p-4 text-left transition hover:bg-slate-50 ${state.caseId === c.id ? 'ring-2' : ''}" style="${state.caseId === c.id ? 'ring-color:transparent; box-shadow: 0 0 0 2px rgba(124,58,237,.25);' : ''}">
+          <div class="flex items-center gap-3 mb-2">
+            <div class="h-10 w-10 rounded-lg brand-chip grid place-items-center text-[color:var(--brand)] font-extrabold text-lg">${c.id[0].toUpperCase()}</div>
+            <div class="flex-1 min-w-0">
+              <div class="font-bold text-slate-900 truncate">${c.title}</div>
+              <div class="text-xs text-slate-500">${c.subtitle}</div>
+            </div>
+          </div>
+          <div class="pill ${c.level === 'Advanced' ? 'border-red-200 text-red-700' : ''}" style="${c.level !== 'Advanced' ? 'border-color: rgba(124,58,237,.25); color: var(--brand);' : ''}">${c.level}</div>
+        </button>
+      `).join('')
+
+      wrap.querySelectorAll('button').forEach(b => {
+        b.addEventListener('click', () => switchCase(b.dataset.case))
+      })
+    }
+
+    function switchCase(id) {
+      if (id === state.caseId) return
+      state.caseId = id
+      state.form = { identity: '', situation: '', background: '', assessment: '', recommendation: '' }
+      state.score = 0
+      state.feedback = ''
+      state.seconds = 0
+      if (timerInt) { clearInterval(timerInt); timerInt = null; state.timerOn = false }
+      renderCaseButtons(); renderMeta(); renderInputs(); renderScript(); renderSideLists()
+    }
+
+    function renderMeta() {
+      const c = selectedCase()
+      qs('#caseTag').textContent = c.title
+      qs('#levelPill').textContent = c.level
+      qs('#timePill').textContent = `${Math.floor(state.seconds / 60)}m ${state.seconds % 60}s`
+
+      const sp = qs('#scorePill')
+      sp.textContent = `${state.score}%`
+      sp.className = 'pill'
+      if (state.score) {
+        sp.className = `px-3 py-1 rounded-full text-xs font-extrabold ${scoreColor(state.score)}`
+      }
+
+      const fb = qs('#feedbackBox')
+      if (state.feedback) {
+        fb.textContent = state.feedback
+        fb.classList.remove('hidden')
+      } else {
+        fb.classList.add('hidden')
       }
     }
-  ];
 
-  const quiz = [
-    { q: "Komponen manakah yang PALING sesuai untuk menyatakan keperluan tindakan segera?", options: ["Situation", "Background", "Assessment", "Recommendation"], a: 3 },
-    { q: "Dalam ISBAR, maklumat 'ubat sedia ada & alergi' lazimnya ditempatkan di?", options: ["Identity", "Background", "Assessment", "Recommendation"], a: 1 },
-    { q: "Contoh ayat yang baik dalam 'Assessment' ialah...", options: ["'Saya rasa pesakit ni tak apa-apa'", "'Tanda vital stable'", "'GCS 14, BP 178/96, facial asymmetry, CT brain pending'", "'Sila doktor tentukan'"], a: 2 },
-    { q: "Apakah ciri utama komunikasi ISBAR yang baik?", options: ["Panjang & terperinci tanpa struktur", "Berstruktur, ringkas, jelas, ada cadangan", "Banyak istilah kompleks", "Bebas mengikut kreativiti"], a: 1 },
-    { q: "Elemen 'Identity' yang bagus mengandungi...", options: ["Nama pesakit sahaja", "Nama + umur + RN + lokasi/katil", "Diagnosis terbaru sahaja", "Nombor telefon waris"], a: 1 },
-    { q: "'Time critical' lazimnya perlu dinyatakan dalam komponen...", options: ["Situation", "Background", "Assessment", "Recommendation"], a: 3 }
-  ];
+    function renderInputs() {
+      const c = selectedCase()
+      const fields = [
+        { key: 'identity', label: 'I — Identity (Identiti)', keywords: [] },
+        { key: 'situation', label: 'S — Situation (Situasi)', keywords: c.keywords.situation },
+        { key: 'background', label: 'B — Background (Latar Belakang)', keywords: c.keywords.background },
+        { key: 'assessment', label: 'A — Assessment (Penilaian)', keywords: c.keywords.assessment },
+        { key: 'recommendation', label: 'R — Recommendation (Rekomendasi)', keywords: c.keywords.recommendation },
+      ]
 
-  // ======= Helpers =======
-  const $ = sel => document.querySelector(sel);
-  const $$ = sel => Array.from(document.querySelectorAll(sel));
+      const html = fields.map(f => {
+        const text = state.form[f.key] || ''
+        return `
+          <div class="card p-5">
+            <label class="block font-extrabold mb-2 text-slate-900">${f.label}</label>
+            <textarea data-field="${f.key}" class="w-full min-h-[140px] rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium focus:ring-4 focus:ring-purple-100 focus:border-[var(--brand)] transition" placeholder="Tulis di sini...">${text.replace(/</g, '&lt;')}</textarea>
+            ${f.keywords.length ? `
+              <div class="mt-3">
+                <div class="text-xs text-slate-500 mb-2 font-semibold uppercase tracking-wide">Kata kunci disyorkan</div>
+                <div data-badge-for="${f.key}"></div>
+              </div>` : ''
+          }
+          </div>`
+      }).join('')
+      qs('#inputsWrap').innerHTML = html
 
-  const getLS = (k, def) => {
-    try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : def; } catch { return def; }
-  };
-  const setLS = (k, v) => localStorage.setItem(k, JSON.stringify(v));
+      // Bind once, no re-render loop on input
+      qs('#inputsWrap').querySelectorAll('textarea').forEach(t => {
+        t.addEventListener('input', (e) => {
+          state.form[e.target.dataset.field] = e.target.value
+          renderScript()           // only update preview
+          refreshBadges()          // update chips live
+        })
+      })
 
-  const download = (filename, text) => {
-    const el = document.createElement('a');
-    el.setAttribute('href', 'data:text/json;charset=utf-8,' + encodeURIComponent(text));
-    el.setAttribute('download', filename);
-    document.body.appendChild(el); el.click(); el.remove();
-  };
-
-  const kebab = s => s.toLowerCase().replace(/\s+/g, '-');
-
-  // ======= State =======
-  let dark = getLS('isbar_dark', false);
-  let tab = getLS('isbar_tab', 'intro');
-  let caseId = getLS('isbar_case', cases[0].id);
-  let form = getLS('isbar_form_' + caseId, { identity:'', situation:'', background:'', assessment:'', recommendation:'' });
-  let score = getLS('isbar_score_' + caseId, 0);
-  let feedback = getLS('isbar_feedback_' + caseId, '');
-  let showScript = getLS('isbar_show_script_' + caseId, true);
-  let seconds = getLS('isbar_timer_' + caseId, 0);
-  let timerOn = false;
-
-  let quizAnswers = getLS('isbar_quiz', Array(quiz.length).fill(null));
-  let quizScore = getLS('isbar_quiz_score', 0);
-
-  // ======= UI Parts (render functions) =======
-  function applyDark() {
-    const root = document.documentElement;
-    if (dark) root.classList.add('dark'); else root.classList.remove('dark');
-    setLS('isbar_dark', dark);
-    // toggle knob position
-    const knob = $('#darkToggle span');
-    if (knob) knob.classList.toggle('translate-x-7', dark), knob.classList.toggle('translate-x-1', !dark);
-    // toggle bg colors
-    const tgl = $('#darkToggle');
-    if (tgl) {
-      if (dark) { tgl.classList.remove('bg-zinc-300','border-zinc-400'); tgl.classList.add('dark:bg-zinc-700','dark:border-zinc-600'); }
+      refreshBadges()
     }
-  }
 
-  function setActiveTab(next) {
-    tab = next; setLS('isbar_tab', tab);
-    $$('.tab-panel').forEach(p => p.classList.add('hidden'));
-    $('#tab-' + tab).classList.remove('hidden');
-    $$('.tab-btn').forEach(b => {
-      const active = b.dataset.tab === tab;
-      b.className = `tab-btn px-4 py-2 rounded-xl text-sm font-medium border transition shadow-sm ${active ? 'bg-emerald-600 text-white border-emerald-700' : 'bg-white/70 dark:bg-zinc-900/60 text-zinc-700 dark:text-zinc-200 border-zinc-200 dark:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-800'}`;
-    });
-    updateProgress();
-  }
-
-  function updateProgress() {
-    let p = tab === 'intro' ? 20 : tab === 'guide' ? 40 : tab === 'sim' ? 75 : tab === 'quiz' ? 90 : 20;
-    const stored = parseInt(localStorage.getItem('isbar_quiz_score') || '0', 10);
-    if (stored >= 80) p = 100;
-    $('#progressFill').style.width = p + '%';
-  }
-
-  function selectedCase() {
-    return cases.find(c => c.id === caseId);
-  }
-
-  function renderCaseButtons() {
-    const wrap = $('#caseButtons'); wrap.innerHTML = '';
-    cases.forEach(c => {
-      const btn = document.createElement('button');
-      btn.className = `px-3 py-2 rounded-xl border text-sm ${c.id === caseId ? 'bg-emerald-600 text-white border-emerald-700' : 'bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-700'}`;
-      btn.textContent = c.title;
-      btn.onclick = () => {
-        // save current form to its case key first
-        setLS('isbar_form_' + caseId, form);
-        setLS('isbar_score_' + caseId, score);
-        setLS('isbar_feedback_' + caseId, feedback);
-        setLS('isbar_timer_' + caseId, seconds);
-        setLS('isbar_show_script_' + caseId, showScript);
-
-        caseId = c.id; setLS('isbar_case', caseId);
-        form = getLS('isbar_form_' + caseId, { identity:'', situation:'', background:'', assessment:'', recommendation:'' });
-        score = getLS('isbar_score_' + caseId, 0);
-        feedback = getLS('isbar_feedback_' + caseId, '');
-        seconds = getLS('isbar_timer_' + caseId, 0);
-        showScript = getLS('isbar_show_script_' + caseId, true);
-        timerOn = false;
-        renderSim();
-        renderCaseButtons();
-      };
-      wrap.appendChild(btn);
-    });
-  }
-
-  function badge(word, hit) {
-    const span = document.createElement('span');
-    span.className = `text-[11px] rounded-full px-2 py-1 border mr-1 mb-1 inline-block ${hit ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-zinc-50 text-zinc-500 border-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:border-zinc-700'}`;
-    span.textContent = word;
-    return span;
-  }
-
-  function computeHits() {
-    const sc = selectedCase();
-    const map = {};
-    for (const k of Object.keys(sc.keywords)) {
-      const words = sc.keywords[k];
-      const text = (form[k] || '').toLowerCase();
-      map[k] = words.map(w => ({ word: w, hit: text.includes(w.toLowerCase()) }));
+    function refreshBadges() {
+      const c = selectedCase()
+      const map = {
+        situation: c.keywords.situation,
+        background: c.keywords.background,
+        assessment: c.keywords.assessment,
+        recommendation: c.keywords.recommendation,
+      }
+      Object.keys(map).forEach(k => {
+        const cont = qs(`[data-badge-for="${k}"]`)
+        if (!cont) return
+        const text = (state.form[k] || '').toLowerCase()
+        const chips = (map[k] || []).map(w => badge(w, text.includes(w.toLowerCase()))).join('')
+        cont.innerHTML = chips
+      })
     }
-    return map;
-  }
 
-  function calcScore() {
-    const hits = computeHits();
-    let total = 0;
-    for (const k of Object.keys(hits)) {
-      const arr = hits[k];
-      const part = Math.round((arr.filter(x => x.hit).length / Math.max(1, arr.length)) * 25);
-      total += part;
+
+    function renderScript() {
+      const f = state.form
+      const txt = `I (Identiti): ${f.identity || '—'}
+
+                    S (Situation): ${f.situation || '—'}
+
+                    B (Background): ${f.background || '—'}
+
+                    A (Assessment): ${f.assessment || '—'}
+
+                    R (Recommendation): ${f.recommendation || '—'}`
+      qs('#scriptBox').textContent = txt
+      qs('#scriptBox').style.display = state.showScript ? 'block' : 'none'
     }
-    const identityBonus = form.identity.trim().length > 10 ? 10 : 0;
-    score = Math.min(100, total + identityBonus);
-    setLS('isbar_score_' + caseId, score);
-    feedback = `Skor: ${score}%. ${score >= 80 ? "Cemerlang — ISBAR jelas dan tepat." : score >= 50 ? "Memuaskan — kemaskini kata kunci klinikal & rekomendasi." : "Perlu penambahbaikan — tambah butiran penting & strukturkan ayat."}`;
-    setLS('isbar_feedback_' + caseId, feedback);
-    renderScore();
-    alert(feedback);
-  }
 
-  function renderScore() {
-    const pill = $('#scorePill');
-    pill.textContent = `${score}%`;
-    pill.className = 'score-pill text-white text-xs font-semibold px-2.5 py-1 rounded-full ' + (score >= 80 ? 'bg-emerald-600' : score >= 50 ? 'bg-amber-600' : 'bg-rose-600');
-  }
+    function renderSideLists() {
+      const c = selectedCase()
+      qs('#objList').innerHTML = c.objectives.map(o => `
+        <li class="flex items-start gap-3 bg-slate-50 border border-slate-200 p-3 rounded-lg">
+          <svg class="w-5 h-5" style="color:var(--success)" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414L8.414 15l-3.121-3.121a1 1 0 011.414-1.414L8.414 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+          </svg>
+          <span class="font-medium text-slate-800">${o}</span>
+        </li>`).join('')
 
-  function startTimerLoop() {
-    setInterval(() => {
-      if (!timerOn) return;
-      seconds += 1;
-      setLS('isbar_timer_' + caseId, seconds);
-      const m = Math.floor(seconds/60), s = seconds%60;
-      $('#timerPill').textContent = `Masa: ${m}m ${s}s`;
-    }, 1000);
-  }
-
-  function renderScript() {
-    const script =
-`I (Identiti): ${form.identity || "—"}
-
-S (Situation): ${form.situation || "—"}
-
-B (Background): ${form.background || "—"}
-
-A (Assessment): ${form.assessment || "—"}
-
-R (Recommendation): ${form.recommendation || "—"}`;
-    $('#scriptBox').textContent = script;
-
-    // script toggle knob
-    const knob = $('#scriptToggle span');
-    knob.classList.toggle('translate-x-7', showScript);
-    knob.classList.toggle('translate-x-1', !showScript);
-    $('#scriptBox').style.display = showScript ? '' : 'none';
-  }
-
-  function renderObjectivesHints() {
-    const sc = selectedCase();
-    const obj = $('#objectivesList'); obj.innerHTML = '';
-    sc.objectives.forEach(o => { const li = document.createElement('li'); li.textContent = o; obj.appendChild(li); });
-    const hints = $('#hintsList'); hints.innerHTML = '';
-    sc.hints.forEach(h => { const li = document.createElement('li'); li.textContent = h; hints.appendChild(li); });
-  }
-
-  function renderForm() {
-    const wrap = $('#formFields'); wrap.innerHTML = '';
-    const items = ['identity','situation','background','assessment','recommendation'];
-    const sc = selectedCase();
-
-    items.forEach(key => {
-      const f = document.createElement('div'); f.className = 'mb-4';
-      const label = document.createElement('label'); label.className = 'block text-sm font-medium text-zinc-700 dark:text-zinc-200 mb-1 uppercase tracking-wide';
-      label.textContent = key;
-      const ta = document.createElement('textarea');
-      ta.value = form[key] || '';
-      ta.placeholder = key === 'identity' ? 'Contoh: Nama, umur, RN, lokasi, katil' : 'Tulis ringkas, jelas & terstruktur';
-      ta.className = 'w-full min-h-[90px] rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white/80 dark:bg-zinc-900/70 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500';
-      ta.oninput = (e) => { form[key] = e.target.value; setLS('isbar_form_' + caseId, form); renderScript(); renderKeywordRow(); };
-
-      const hintRow = document.createElement('div'); hintRow.className = 'mt-1 text-[11px] text-zinc-500 dark:text-zinc-400';
-      const labelSpan = document.createElement('span'); labelSpan.textContent = 'Kata kunci (disyorkan): ';
-      hintRow.appendChild(labelSpan);
-
-      const rowWrap = document.createElement('span');
-      const words = sc.keywords[key === 'identity' ? 'situation' : key] || [];
-      const text = (form[key] || '').toLowerCase();
-      words.forEach(w => rowWrap.appendChild(badge(w, text.includes(w.toLowerCase()))));
-      hintRow.appendChild(rowWrap);
-
-      f.appendChild(label); f.appendChild(ta); f.appendChild(hintRow);
-      wrap.appendChild(f);
-    });
-
-    function renderKeywordRow() {
-      // refresh keyword badges per textarea
-      $$('#formFields > div').forEach((block, idx) => {
-        const key = items[idx];
-        const rowWrap = block.querySelector('div > span:last-child');
-        const ta = block.querySelector('textarea');
-        const words = sc.keywords[key === 'identity' ? 'situation' : key] || [];
-        rowWrap.innerHTML = '';
-        words.forEach(w => rowWrap.appendChild(badge(w, (ta.value || '').toLowerCase().includes(w.toLowerCase()))));
-      });
+      qs('#hintList').innerHTML = c.hints.map(h => `
+        <li class="flex items-start gap-3 bg-slate-50 border border-slate-200 p-3 rounded-lg">
+          <svg class="w-5 h-5" style="color:var(--warm)" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path d="M10 2a8 8 0 100 16 8 8 0 000-16zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9zM10 5a1 1 0 110 2 1 1 0 010-2z"/>
+          </svg>
+          <span class="font-medium text-slate-800">${h}</span>
+        </li>`).join('')
     }
-  }
 
-  function renderSim() {
-    const sc = selectedCase();
-    $('#caseTag').textContent = `Kes: ${sc.title}`;
-    $('#levelPill').textContent = `Aras: ${sc.level}`;
-    const m = Math.floor(seconds/60), s = seconds%60;
-    $('#timerPill').textContent = `Masa: ${m}m ${s}s`;
-    renderScore();
-    renderForm();
-    renderScript();
-    renderObjectivesHints();
-  }
+    function toggleTimer() {
+      state.timerOn = !state.timerOn
+      const btn = qs('#timerBtn')
+      if (state.timerOn) {
+        btn.textContent = 'Pause Timer'
+        btn.className = 'btn'
+        timerInt = setInterval(() => {
+          state.seconds += 1
+          qs('#timePill').textContent = `${Math.floor(state.seconds / 60)}m ${state.seconds % 60}s`
+        }, 1000)
+      } else {
+        btn.textContent = 'Mula Timer'
+        btn.className = 'btn'
+        clearInterval(timerInt); timerInt = null
+      }
+    }
 
-  function renderQuiz() {
-    const cont = $('#quizContainer'); cont.innerHTML = '';
-    quiz.forEach((it, idx) => {
-      const card = document.createElement('div');
-      card.className = 'border rounded-2xl p-4 bg-white/80 dark:bg-zinc-900/70 border-zinc-200 dark:border-zinc-700';
-      const qDiv = document.createElement('div');
-      qDiv.className = 'font-medium mb-2';
-      qDiv.textContent = `${idx+1}. ${it.q}`;
-      const grid = document.createElement('div'); grid.className = 'grid grid-cols-1 md:grid-cols-2 gap-2';
-      it.options.forEach((op, j) => {
-        const lab = document.createElement('label');
-        const active = quizAnswers[idx] === j;
-        lab.className = `text-sm px-3 py-2 rounded-xl border cursor-pointer ${active ? 'bg-emerald-50 border-emerald-300 text-emerald-700' : 'bg-white dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700'}`;
-        const input = document.createElement('input');
-        input.type = 'radio'; input.name = `q-${idx}`; input.className = 'mr-2';
-        input.checked = active;
-        input.onchange = () => { quizAnswers = quizAnswers.map((v,k)=> k===idx? j : v); setLS('isbar_quiz', quizAnswers); renderQuiz(); };
-        lab.appendChild(input);
-        lab.appendChild(document.createTextNode(op));
-        grid.appendChild(lab);
-      });
-      card.appendChild(qDiv); card.appendChild(grid); cont.appendChild(card);
-    });
-    const qp = $('#quizScorePill');
-    qp.textContent = `${quizScore}%`;
-    qp.className = 'score-pill text-white text-xs font-semibold px-2.5 py-1 rounded-full ' + (quizScore >= 80 ? 'bg-emerald-600' : quizScore >= 50 ? 'bg-amber-600' : 'bg-rose-600');
-    updateProgress();
-  }
+    function loadSample() { state.form = { ...selectedCase().sample }; renderInputs(); renderScript() }
 
-  function submitQuiz() {
-    let s = 0; quiz.forEach((it, idx) => { if (quizAnswers[idx] === it.a) s++; });
-    quizScore = Math.round((s / quiz.length) * 100);
-    setLS('isbar_quiz_score', quizScore);
-    renderQuiz();
-    alert(`Skor kuiz: ${quizScore}%`);
-  }
+    function calcScore() {
+      const c = selectedCase()
+      let total = 0
+        ;['situation', 'background', 'assessment', 'recommendation'].forEach(k => {
+          const words = c.keywords[k] || []
+          const text = (state.form[k] || '').toLowerCase()
+          const hits = words.filter(w => text.includes(w.toLowerCase())).length
+          const part = Math.round((hits / Math.max(1, words.length)) * 25)
+          total += part
+        })
+      const identityBonus = (state.form.identity || '').trim().length > 10 ? 10 : 0
+      const finalScore = Math.min(100, total + identityBonus)
+      state.score = finalScore
+      state.feedback = finalScore >= 80
+        ? `Cemerlang! Skor: ${finalScore}%. ISBAR anda jelas dan tepat.`
+        : finalScore >= 50
+          ? `Memuaskan. Skor: ${finalScore}%. Kemaskini kata kunci klinikal & rekomendasi.`
+          : `Perlu penambahbaikan. Skor: ${finalScore}%. Tambah butiran penting & strukturkan ayat.`
+      renderMeta(); refreshProgress()
+    }
 
-  function resetQuiz() {
-    quizAnswers = Array(quiz.length).fill(null);
-    quizScore = 0;
-    setLS('isbar_quiz', quizAnswers);
-    setLS('isbar_quiz_score', quizScore);
-    renderQuiz();
-  }
+    function resetForm() {
+      state.form = { identity: '', situation: '', background: '', assessment: '', recommendation: '' }
+      state.score = 0; state.feedback = ''; state.seconds = 0
+      if (timerInt) { clearInterval(timerInt); timerInt = null; state.timerOn = false }
+      renderInputs(); renderMeta(); renderScript()
+    }
 
-  // ======= Events =======
-  function bindEvents() {
-    // Tabs
-    $$('.tab-btn').forEach(b => b.addEventListener('click', () => setActiveTab(b.dataset.tab)));
-
-    // Dark toggle
-    $('#darkToggle').addEventListener('click', () => { dark = !dark; applyDark(); });
-
-    // Script toggle
-    $('#scriptToggle').addEventListener('click', () => {
-      showScript = !showScript; setLS('isbar_show_script_' + caseId, showScript); renderScript();
-    });
-
-    // Timer
-    $('#timerBtn').addEventListener('click', () => {
-      timerOn = !timerOn;
-      $('#timerBtn').textContent = timerOn ? 'Pause Timer' : 'Mula Timer';
-    });
-
-    // Sample
-    $('#loadSampleBtn').addEventListener('click', () => {
-      const sc = selectedCase();
-      form = JSON.parse(JSON.stringify(sc.sample));
-      setLS('isbar_form_' + caseId, form);
-      renderSim();
-    });
-
-    // Score
-    $('#calcScoreBtn').addEventListener('click', calcScore);
-
-    // Reset
-    $('#resetBtn').addEventListener('click', () => {
-      form = { identity:'', situation:'', background:'', assessment:'', recommendation:'' };
-      score = 0; feedback = ''; seconds = 0; timerOn = false;
-      setLS('isbar_form_' + caseId, form);
-      setLS('isbar_score_' + caseId, score);
-      setLS('isbar_feedback_' + caseId, feedback);
-      setLS('isbar_timer_' + caseId, seconds);
-      renderSim();
-    });
-
-    // Download
-    $('#downloadBtn').addEventListener('click', () => {
+    function downloadReport() {
       const payload = {
         timestamp: new Date().toISOString(),
-        case: caseId,
+        case: state.caseId,
         caseTitle: selectedCase().title,
-        secondsSpent: seconds,
-        form, score, feedback
-      };
-      download(`ISBAR_${caseId}_report.json`, JSON.stringify(payload, null, 2));
-    });
+        secondsSpent: state.seconds,
+        form: state.form,
+        score: state.score,
+        feedback: state.feedback
+      }
+      download(`ISBAR_${state.caseId}_report.json`, JSON.stringify(payload, null, 2))
+    }
 
-    // Print
-    $('#printBtn').addEventListener('click', () => window.print());
+    /* -------------------- Quiz -------------------- */
+    function renderQuiz() {
+      const wrap = qs('#quizWrap'); let html = ''
+      questions.forEach((q, idx) => {
+        const sel = state.quizAnswers[idx]
+        const submitted = state.quizSubmitted
+        html += `
+      <div class="card p-4 mb-4">
+        <div class="font-extrabold mb-3 text-slate-900">${idx + 1}. ${q.q}</div>
+        <div class="space-y-2">
+          ${q.options.map((op, j) => {
+          const isCorrect = (j === q.a)
+          const isSelected = (sel === j)
+          // classes when submitted:
+          let cls = 'border-slate-200 bg-white'
+          if (submitted) {
+            if (isCorrect) cls = 'border-emerald-400 bg-emerald-50'
+            else if (isSelected && !isCorrect) cls = 'border-red-300 bg-red-50'
+          } else if (isSelected) {
+            cls = 'border-[var(--brand)] bg-purple-50'
+          }
+          const disabled = submitted ? 'disabled' : ''
+          return `
+              <label class="flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition ${cls}">
+                <input type="radio" name="q-${idx}" class="w-5 h-5" style="accent-color: var(--brand)" ${isSelected ? 'checked' : ''} ${disabled}/>
+                <span class="flex-1 font-medium text-slate-800">${op}</span>
+                ${submitted && isCorrect ? '<span class="text-xs font-semibold text-emerald-700">Betul</span>' : ''}
+                ${submitted && isSelected && !isCorrect ? '<span class="text-xs font-semibold text-red-700">Salah</span>' : ''}
+              </label>
+            `
+        }).join('')}
+        </div>
+        ${state.quizSubmitted ? `
+          <div class="mt-3 text-xs text-slate-600">
+            Jawapan betul: <span class="font-semibold">${q.options[q.a]}</span>
+          </div>` : ''
+          }
+      </div>
+    `
+      })
+      wrap.innerHTML = html
 
-    // Quiz
-    $('#quizSubmit').addEventListener('click', submitQuiz);
-    $('#quizReset').addEventListener('click', resetQuiz);
+      if (!state.quizSubmitted) {
+        questions.forEach((_, idx) => {
+          wrap.querySelectorAll(`input[name="q-${idx}"]`).forEach((inp, j) => {
+            inp.addEventListener('change', () => {
+              state.quizAnswers[idx] = j
+              renderQuiz()
+            })
+          })
+        })
+      }
+      updateQuizPill()
+    }
 
-    // Collapsible cards
-    $$('.btn-mini').forEach(btn => btn.addEventListener('click', () => {
-      const sel = btn.getAttribute('data-toggle');
-      const el = document.querySelector(sel);
-      const hidden = el.style.display === 'none';
-      el.style.display = hidden ? '' : 'none';
-      btn.textContent = hidden ? 'Sembunyi' : 'Tunjuk';
-    }));
-  }
+    function updateQuizPill() {
+      const pill = qs('#quizScorePill')
+      pill.textContent = `${state.quizScore}%`
+      pill.className = 'pill'
+      if (state.quizScore) {
+        pill.className = `px-3 py-1 rounded-full text-xs font-extrabold ${scoreColor(state.quizScore)}`
+      }
+      refreshProgress()
+    }
 
-  // ======= Section/Card helpers (styling) =======
-  function enhanceStyles() {
-    // Section styles (applied by class names in HTML)
-    $$('.section').forEach(sec => {
-      sec.classList.add('bg-white/90','dark:bg-zinc-900/80','rounded-2xl','shadow','p-5','md:p-6','mb-6','border','border-zinc-200','dark:border-zinc-800');
-    });
-    $$('.section-head .section-title').forEach(h => {
-      h.classList.add('text-xl','md:text-2xl','font-semibold','tracking-tight','text-zinc-800','dark:text-zinc-100');
-    });
-    $$('.card').forEach(c => c.classList.add('border','rounded-2xl','p-4','md:p-5','bg-white/70','dark:bg-zinc-900/70','border-zinc-200','dark:border-zinc-800'));
-    $$('.card-title').forEach(t => t.classList.add('font-semibold','text-zinc-800','dark:text-zinc-100'));
-  }
+    function quizSubmit() {
+      let s = 0
+      questions.forEach((q, idx) => { if (state.quizAnswers[idx] === q.a) s += 1 })
+      state.quizScore = Math.round((s / questions.length) * 100)
+      state.quizSubmitted = true
+      renderQuiz()
+      updateQuizPill()
+    }
 
-  // ======= Init =======
-  (function init(){
-    $('#yearNow').textContent = new Date().getFullYear();
-    applyDark();
-    renderCaseButtons();
-    renderSim();
-    renderQuiz();
-    bindEvents();
-    enhanceStyles();
-    setActiveTab(tab);
-    startTimerLoop();
-  })();
+    function quizReset() {
+      state.quizAnswers = Array(questions.length).fill(null)
+      state.quizScore = 0
+      state.quizSubmitted = false
+      renderQuiz()
+    }
+
+    /* -------------------- Sidebar Mobile -------------------- */
+    const sidebar = qs('#sidebar'), backdrop = qs('#backdrop')
+    function openMobileSidebar() { sidebar.classList.add('open'); backdrop.classList.add('show') }
+    function closeMobileSidebar() { sidebar.classList.remove('open'); backdrop.classList.remove('show') }
+
+    /* -------------------- Bind -------------------- */
+    function bind() {
+      // nav
+      qsa('.nav-link').forEach(b => {
+        b.addEventListener('click', () => setActiveTab(b.dataset.tab))
+      })
+
+      // top buttons (guard when absent)
+      const printBtn = qs('#printBtn')
+      if (printBtn) printBtn.addEventListener('click', () => window.print())
+
+      const downloadBtn = qs('#downloadBtn')
+      if (downloadBtn) downloadBtn.addEventListener('click', downloadReport)
+
+      // sim buttons (event delegation)
+      document.addEventListener('click', (e) => {
+        if (e.target.id === 'timerBtn') toggleTimer()
+        if (e.target.id === 'loadSampleBtn') loadSample()
+        if (e.target.id === 'calcBtn') calcScore()
+        if (e.target.id === 'resetBtn') resetForm()
+        if (e.target.id === 'scriptToggle') { state.showScript = !state.showScript; renderScript() }
+      })
+
+      // quiz buttons (event delegation)
+      document.addEventListener('click', (e) => {
+        if (e.target.id === 'quizSubmit') quizSubmit()
+        if (e.target.id === 'quizReset') quizReset()
+      })
+
+      // mobile
+      qs('#mobileToggle').addEventListener('click', openMobileSidebar)
+      backdrop.addEventListener('click', closeMobileSidebar)
+    }
+
+    /* -------------------- Init -------------------- */
+    async function init() {
+      qs('#yearNow').textContent = new Date().getFullYear()
+      await setActiveTab(state.tab)
+      // intro module attempt (optional)
+      const introBtn = qsa('.nav-link').find(b => b.dataset.tab === 'intro')
+      if (introBtn?.dataset.url) {
+        try { qs('#introHost').innerHTML = await loadHTML(introBtn.dataset.url) } catch { }
+      }
+      // sim scaffolding
+      renderCaseButtons(); renderMeta(); renderInputs(); renderScript(); renderSideLists()
+      // quiz scaffolding
+      renderQuiz()
+      // events
+      bind()
+      // progress
+      refreshProgress()
+    }
+    init()
   </script>
 </body>
+
 </html>
